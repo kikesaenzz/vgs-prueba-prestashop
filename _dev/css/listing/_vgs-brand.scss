@@ -1,0 +1,28 @@
+@use "sass:map";
+
+// Ajustes de marca para la página de Categoría, según el diseño de Figma.
+
+.block-category {
+  background-color: $primary;
+  border-radius: $border-radius;
+  padding: map.get($spacers, 4);
+  margin-bottom: map.get($spacers, 4);
+
+  .h1 {
+    color: $white;
+    margin-bottom: 0;
+  }
+
+  #category-description {
+    color: rgba($white, 0.85);
+  }
+}
+
+.active_filters {
+  .filter-block,
+  .filter-block a {
+    background-color: rgba($primary, 0.1);
+    color: $primary;
+    border-radius: 50rem;
+  }
+}
