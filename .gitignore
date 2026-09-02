@@ -1,0 +1,15 @@
+# Dependencias (se instalan con npm install)
+_dev/node_modules/
+
+# Configuración local de Webpack (URLs/puertos de cada entorno)
+_dev/webpack/.env
+
+# Salida compilada por Webpack (se regenera con npm run build / watch)
+assets/css/
+assets/js/
+assets/img-dist/
+assets/cache/
+assets/preload.html
+
+# Sistema
+.DS_Store
