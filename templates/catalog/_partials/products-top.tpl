@@ -29,35 +29,18 @@
     {/block}
   </div>
 
-  <div class="col-auto mt-2">
-    {block name='sort_by'}
-      {include file='catalog/_partials/per-page.tpl'}
-    {/block}
-  </div>
+  {* El diseño no incluye el selector de "productos por página" ni el
+     conmutador rejilla/lista, así que no se pintan. El listado es siempre
+     rejilla, que es como está maquetado. *}
 
   <div class="col-sm-auto col-12 mt-2 d-md-none ml-auto">
     {if !empty($listing.rendered_facets)}
       <button data-target="#mobile_filters" data-toggle="modal" class="btn btn-secondary d-sm-inline-block d-none">
-        {l s='Filter' d='Shop.Theme.Actions'}
+        {l s='Filtrar' d='Shop.Theme.Actions'}
       </button>
       <button data-target="#mobile_filters" data-toggle="modal" class="btn btn-secondary btn-block d-sm-none">
-        {l s='Filter' d='Shop.Theme.Actions'}
+        {l s='Filtrar' d='Shop.Theme.Actions'}
       </button>
     {/if}
-  </div>
-
-  <div class="col-auto d-none d-lg-block ml-auto mt-2">
-    <ul class="display-toggle d-flex align-items-center mx-n1 m-0">
-      <li class="display-toggle__elem px-1">
-        <a href="#" data-toggle-listing data-display-type="grid" class="display-toggle__link d-inline-block {if $listingDisplayType == 'grid'}active{/if}">
-          <span class="material-icons display-toggle__icon">view_module</span>
-        </a>
-      </li>
-      <li class="display-toggle__elem px-1">
-        <a href="#" data-toggle-listing data-display-type="list" class="display-toggle__link d-inline-block {if $listingDisplayType == 'list'}active{/if}">
-          <span class="material-icons display-toggle__icon">view_list</span>
-        </a>
-      </li>
-    </ul>
   </div>
 </div>

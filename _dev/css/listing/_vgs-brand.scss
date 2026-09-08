@@ -493,3 +493,83 @@
     pointer-events: none;
   }
 }
+
+// Filtros activos que pinta el módulo de facetas: se les da el aspecto de
+// píldora con borde teal del diseño.
+.active-filters,
+#js-active-search-filters {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: rem-calc(16px);
+  margin-bottom: rem-calc(28px);
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+
+  .active-filters__title,
+  .h6,
+  p {
+    margin: 0;
+    color: $vgs-dark-text;
+    font-size: rem-calc(16px);
+    font-weight: 600;
+  }
+
+  ul {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: rem-calc(10px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .filter-block,
+  li a {
+    display: inline-flex;
+    align-items: center;
+    gap: rem-calc(8px);
+    min-height: rem-calc(40px);
+    padding: 0 rem-calc(16px);
+    border: rem-calc(1px) solid $primary;
+    border-radius: rem-calc(20px);
+    background-color: $white;
+    color: $primary;
+    font-size: rem-calc(14px);
+    font-weight: 500;
+
+    &:hover,
+    &:focus {
+      background-color: rgba($vgs-light-blue, 0.3);
+      color: $primary;
+      text-decoration: none;
+    }
+  }
+}
+
+// Selector de orden: coherente con el resto de controles del diseño.
+.products-selection {
+  .select-title,
+  select,
+  .btn {
+    border-color: $primary;
+    border-radius: rem-calc(8px);
+    color: $primary;
+    font-size: rem-calc(14px);
+    font-weight: 500;
+  }
+
+  .btn-secondary {
+    background-color: $primary;
+    border-color: $primary;
+    color: $white;
+
+    &:hover,
+    &:focus {
+      background-color: darken($primary, 6%);
+      border-color: darken($primary, 6%);
+    }
+  }
+}
