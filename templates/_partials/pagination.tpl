@@ -26,38 +26,46 @@
 
 {block name='pagination_page_list'}
   {if $pagination.should_be_displayed}
-    <nav>
-      <ul class="pagination justify-content-center mt-4 mb-2">
-        {foreach from=$pagination.pages item="page"}
-          <li  class="page-item{if $page.current} active{/if} {if $page.type === 'spacer'}disabled{/if}">
-            {if $page.type === 'spacer'}
-              <span
-                rel="{if $page.type === 'previous'}prev{elseif $page.type === 'next'}next{else}nofollow{/if}"
-                href="#"
-                class="page-link"
-              >
-                &hellip;
-              </span>
-            {else}
-              <a
-                rel="{if $page.type === 'previous'}prev{elseif $page.type === 'next'}next{else}nofollow{/if}"
-                href="{$page.url}"
-                class="page-link {['disabled' => !$page.clickable, 'js-search-link' => true]|classnames}"
-              >
-                {if $page.type === 'previous'}
-                  <span class="material-icons font-reset align-middle">keyboard_arrow_left</span>
-                  <span class="sr-only">{l s='Previous' d='Shop.Theme.Actions'}</span>
-                {elseif $page.type === 'next'}
-                  <span class="material-icons font-reset align-middle">keyboard_arrow_right</span>
-                  <span class="sr-only">{l s='Next' d='Shop.Theme.Actions'}</span>
-                {else}
-                  {$page.page}
-                {/if}
-              </a>
-            {/if}
-          </li>
-        {/foreach}
-      </ul>
-    </nav>
+    {* Pie del listado según el diseño: recuento a la izquierda y paginación a
+       la derecha, con "Anterior"/"Siguiente" rotulados. *}
+    <div class="vgs-listing-foot">
+      <p class="vgs-listing-foot__count">
+        {l s='Mostrando %from% - %to% de %total% artículos'
+           sprintf=['%from%' => $pagination.items_shown_from, '%to%' => $pagination.items_shown_to, '%total%' => $pagination.total_items]
+           d='Shop.Theme.Catalog'}
+      </p>
+
+      <nav aria-label="{l s='Pagination' d='Shop.Theme.Global'}">
+        <ul class="pagination">
+          {foreach from=$pagination.pages item="page"}
+            <li class="page-item{if $page.current} active current{/if}{if $page.type === 'spacer'} disabled{/if}{if $page.type === 'previous'} previous{/if}{if $page.type === 'next'} next{/if}">
+              {if $page.type === 'spacer'}
+                <span class="page-link">&hellip;</span>
+              {else}
+                <a
+                  rel="{if $page.type === 'previous'}prev{elseif $page.type === 'next'}next{else}nofollow{/if}"
+                  href="{$page.url}"
+                  class="page-link {['disabled' => !$page.clickable, 'js-search-link' => true]|classnames}"
+                >
+                  {if $page.type === 'previous'}
+                    <svg class="page-link__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.67" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M15 6l-6 6 6 6"/>
+                    </svg>
+                    <span>{l s='Anterior' d='Shop.Theme.Actions'}</span>
+                  {elseif $page.type === 'next'}
+                    <span>{l s='Siguiente' d='Shop.Theme.Actions'}</span>
+                    <svg class="page-link__arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.67" aria-hidden="true">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M9 6l6 6-6 6"/>
+                    </svg>
+                  {else}
+                    {$page.page}
+                  {/if}
+                </a>
+              {/if}
+            </li>
+          {/foreach}
+        </ul>
+      </nav>
+    </div>
   {/if}
 {/block}

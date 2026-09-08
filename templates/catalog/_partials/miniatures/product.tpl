@@ -43,7 +43,8 @@
         {include file='catalog/_partials/miniatures/_partials/product-prices.tpl'}
 
         {block name='product_form'}
-          {include file='catalog/_partials/miniatures/_partials/product-form.tpl'}
+          {* En el diseño la tarjeta del listado solo muestra imagen, título y
+             precio; la compra se hace desde la ficha del producto. *}
         {/block}
       </div>
 

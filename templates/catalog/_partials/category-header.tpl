@@ -23,15 +23,9 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  *}
 <div id="js-product-list-header">
-    <div class="block-category">
-        <h1 class="h1">
-            {$category.name}
-            {if $listing.pagination.items_shown_from !== 1}
-                {l s='- page' d='Shop.Theme.Catalog'} {$listing.pagination.current_page}
-            {/if}
-        </h1>
-        {if $category.description && $listing.pagination.items_shown_from == 1}
-            <div id="category-description" class="cms-content">{$category.description nofilter}</div>
-        {/if}
-    </div>
+    {* El nombre de la categoría se pinta en la banda teal de la cabecera
+       (ver _partials/header.tpl), como en el diseño. *}
+    {if $category.description && $listing.pagination.items_shown_from == 1}
+        <div id="category-description" class="cms-content mb-4">{$category.description nofilter}</div>
+    {/if}
 </div>

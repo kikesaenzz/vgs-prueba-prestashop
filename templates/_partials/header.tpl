@@ -94,4 +94,55 @@
         </div>
     </div>
     {hook h='displayNavFullWidth'}
+
+    {* Las migas y el título de categoría son bandas a ancho completo en el
+       diseño, por eso se pintan aquí (fuera del .container del layout) y no
+       dentro del contenido. *}
+    {block name='vgs_breadcrumb_band'}
+        {if isset($breadcrumb) && $breadcrumb.links|count > 1}
+            <div class="vgs-breadcrumb">
+                <div class="container">
+                    <nav aria-label="breadcrumb" data-depth="{$breadcrumb.count}">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item breadcrumb-item--home">
+                                <a href="{$urls.pages.index}" aria-label="{l s='Home' d='Shop.Theme.Global'}">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.5Z"/>
+                                    </svg>
+                                </a>
+                            </li>
+                            {foreach from=$breadcrumb.links item=path name=breadcrumb}
+                                {if !$smarty.foreach.breadcrumb.first}
+                                    <li class="breadcrumb-item{if $smarty.foreach.breadcrumb.last} active{/if}"
+                                        {if $smarty.foreach.breadcrumb.last}aria-current="page"{/if}>
+                                        {if !$smarty.foreach.breadcrumb.last}<a href="{$path.url}">{/if}
+                                            {$path.title}
+                                        {if !$smarty.foreach.breadcrumb.last}</a>{/if}
+                                    </li>
+                                {/if}
+                            {/foreach}
+                        </ol>
+                    </nav>
+                </div>
+            </div>
+        {/if}
+    {/block}
+
+    {block name='vgs_category_band'}
+        {if $page.page_name == 'category' && isset($category)}
+            <div class="vgs-category-title">
+                <div class="container">
+                    <div class="vgs-category-title__inner">
+                        {if $category.image.medium.url}
+                            <img class="vgs-category-title__icon"
+                                 src="{$category.image.medium.url}"
+                                 alt=""
+                                 width="58" height="58" loading="lazy">
+                        {/if}
+                        <h1 class="vgs-category-title__text">{$category.name}</h1>
+                    </div>
+                </div>
+            </div>
+        {/if}
+    {/block}
 {/block}

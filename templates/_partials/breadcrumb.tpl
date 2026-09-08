@@ -24,25 +24,7 @@
  *}
 
 {block name='breadcrumb'}
-  {if $breadcrumb.links|count > 1}
-    <nav aria-label="breadcrumb" data-depth="{$breadcrumb.count}">
-      {block name='breadcrumb_list'}
-        <ol class="breadcrumb">
-          {foreach from=$breadcrumb.links item=path name=breadcrumb}
-            {block name='breadcrumb_item'}
-              <li {if $smarty.foreach.breadcrumb.last}class="breadcrumb-item active" aria-current="page"{else}class="breadcrumb-item"{/if}>
-                {if !$smarty.foreach.breadcrumb.last}
-                  <a href="{$path.url}">
-                {/if}
-                  {$path.title}
-                {if !$smarty.foreach.breadcrumb.last}
-                  </a>
-                {/if}
-              </li>
-            {/block}
-          {/foreach}
-        </ol>
-      {/block}
-    </nav>
-  {/if}
+  {* Las migas se pintan en _partials/header.tpl porque en el diseño son una
+     banda a ancho completo, fuera del contenedor del contenido. Se deja el
+     bloque vacío para no duplicarlas. *}
 {/block}
