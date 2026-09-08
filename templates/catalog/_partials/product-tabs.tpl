@@ -2,20 +2,11 @@
   <div class="card product-tabs">
     <div class="card-header">
       <ul class="nav nav-tabs card-header-tabs" role="tablist">
-        {if $product.description}
-          <li class="nav-item">
-            <a
-              class="nav-link"
-              data-toggle="tab"
-              href="#description"
-              role="tab"
-              aria-controls="description"
-              >{l s='Description' d='Shop.Theme.Catalog'}</a>
-          </li>
-        {/if}
+        {* La descripción se muestra arriba, en el bloque "Información del
+           producto", así que su pestaña ya no se pinta. *}
         <li class="nav-item">
           <a
-            class="nav-link"
+            class="nav-link active"
             data-toggle="tab"
             href="#product-details"
             role="tab"

@@ -1,4 +1,4 @@
-<div class="js-product-details tab-pane fade"
+<div class="js-product-details tab-pane fade show active"
      id="product-details"
      data-product="{$product.embedded_attributes|json_encode}"
      role="tabpanel"
