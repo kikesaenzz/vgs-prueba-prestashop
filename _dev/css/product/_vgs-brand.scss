@@ -1,0 +1,202 @@
+@use "sass:map";
+
+// Ajustes de marca para la página de Ficha de Producto, según el diseño de Figma.
+
+// Product page title
+.product-container {
+  .h1 {
+    color: $primary;
+    font-weight: 700;
+  }
+}
+
+// Product prices - purple accent
+.product-prices {
+  .price {
+    color: $vgs-purple;
+    font-weight: 700;
+  }
+
+  .price--lg {
+    font-size: 1.75rem;
+  }
+
+  .price--regular {
+    color: $vgs-dark-text;
+    text-decoration: line-through;
+    font-size: 1rem;
+    font-weight: 400;
+  }
+
+  .badge-danger {
+    background-color: $vgs-purple;
+    color: $white;
+    font-weight: 500;
+  }
+}
+
+// Add to cart button - purple
+.product-add-to-cart {
+  .btn-primary {
+    background-color: $vgs-purple;
+    border-color: $vgs-purple;
+    font-weight: 600;
+    padding: 0.75rem 2rem;
+    border-radius: $border-radius;
+
+    &:hover,
+    &:focus {
+      background-color: darken($vgs-purple, 10%);
+      border-color: darken($vgs-purple, 10%);
+    }
+
+    &:active {
+      background-color: darken($vgs-purple, 15%);
+      border-color: darken($vgs-purple, 15%);
+    }
+  }
+}
+
+// Quantity input styling
+.product-add-to-cart {
+  .input-touchspin {
+    border: 1px solid $gray-300;
+    border-radius: $border-radius;
+    max-width: 140px;
+
+    input {
+      text-align: center;
+      font-weight: 700;
+      border: none;
+      box-shadow: none;
+    }
+
+    .input-group-btn-vertical {
+      .btn {
+        border: none;
+        background: transparent;
+        color: $vgs-dark-text;
+
+        &:hover {
+          background: $gray-100;
+        }
+      }
+    }
+  }
+}
+
+// Product info table (Marca, Referencia, Disponibilidad)
+.product-info-table {
+  background-color: $vgs-light-blue;
+  border-radius: $border-radius;
+  padding: map.get($spacers, 3);
+  margin-bottom: map.get($spacers, 3);
+
+  .info-row {
+    display: flex;
+    padding: map.get($spacers, 1) 0;
+    font-size: 0.875rem;
+
+    &:not(:last-child) {
+      border-bottom: 1px solid rgba($primary, 0.15);
+    }
+
+    .info-label {
+      color: $primary;
+      font-weight: 600;
+      min-width: 160px;
+    }
+
+    .info-value {
+      color: $vgs-dark-text;
+    }
+  }
+}
+
+// Delivery info section
+.product-delivery-info {
+  background-color: $vgs-light-purple;
+  border-radius: $border-radius;
+  padding: map.get($spacers, 3);
+  margin-bottom: map.get($spacers, 3);
+  display: flex;
+  align-items: center;
+  gap: map.get($spacers, 2);
+
+  .material-icons {
+    color: $vgs-purple;
+    font-size: 1.5rem;
+  }
+
+  .delivery-text {
+    color: $vgs-purple;
+    font-weight: 500;
+  }
+}
+
+// Product attributes table
+.product-features {
+  margin-top: map.get($spacers, 3);
+
+  .feature-row {
+    display: flex;
+    padding: map.get($spacers, 2) map.get($spacers, 3);
+    font-size: 0.875rem;
+
+    &:nth-child(odd) {
+      background-color: $white;
+    }
+
+    &:nth-child(even) {
+      background-color: $vgs-light-blue;
+    }
+
+    .feature-label {
+      color: $primary;
+      font-weight: 600;
+      min-width: 160px;
+    }
+
+    .feature-value {
+      color: $vgs-dark-text;
+    }
+  }
+}
+
+// Delivery information text
+.tax-shipping-delivery-label {
+  color: $vgs-dark-text;
+  font-size: 0.875rem;
+
+  .delivery-information {
+    color: $primary;
+    font-weight: 500;
+  }
+}
+
+// Product description
+.product-description {
+  color: $vgs-dark-text;
+  line-height: 1.6;
+}
+
+// Product tabs
+.product-tabs {
+  .nav-tabs {
+    .nav-link {
+      color: $primary;
+      font-weight: 500;
+
+      &:hover {
+        border-color: $vgs-light-blue $vgs-light-blue transparent;
+        color: darken($primary, 10%);
+      }
+
+      &.active {
+        color: $primary;
+        border-color: $primary $primary $white;
+        font-weight: 600;
+      }
+    }
+  }
+}

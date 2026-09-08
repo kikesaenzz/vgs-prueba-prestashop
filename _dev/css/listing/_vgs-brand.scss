@@ -26,3 +26,78 @@
     border-radius: 50rem;
   }
 }
+
+// Pagination styling
+.pagination {
+  .page-item {
+    .page-link {
+      color: $primary;
+      border-color: $vgs-light-blue;
+
+      &:hover {
+        background-color: $vgs-light-blue;
+        color: $primary;
+      }
+    }
+
+    &.active .page-link {
+      background-color: $primary;
+      border-color: $primary;
+      color: $white;
+    }
+
+    &.disabled .page-link {
+      color: $gray-400;
+    }
+  }
+}
+
+// Product card info section for listing
+.product-miniature {
+  .product-miniature__info {
+    background-color: $vgs-light-blue;
+    padding: map.get($spacers, 2);
+    border-radius: 0 0 $border-radius-lg $border-radius-lg;
+
+    .product-miniature__title {
+      color: $vgs-dark-navy;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: map.get($spacers, 1);
+
+      a {
+        color: inherit;
+      }
+    }
+
+    .product-miniature__pricing {
+      text-align: left;
+
+      .price {
+        color: $primary;
+        font-weight: 700;
+        font-size: 1rem;
+      }
+
+      .price--regular {
+        color: $vgs-dark-text;
+        text-decoration: line-through;
+        font-size: 0.8125rem;
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+// Product status badges
+.product-flag {
+  &.flag-new {
+    background-color: $primary;
+    color: $white;
+  }
+
+  &.flag-out-of-stock {
+    background-color: $vgs-yellow;
+    color: $vgs-dark-text;
+  }
+}

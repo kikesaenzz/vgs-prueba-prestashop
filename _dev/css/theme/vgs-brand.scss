@@ -9,6 +9,7 @@
   transition:
     box-shadow 0.2s ease,
     transform 0.2s ease;
+  overflow: hidden;
 
   &:hover {
     box-shadow: $box-shadow;
@@ -17,6 +18,49 @@
 
   .product-thumbnail img {
     border-radius: $border-radius;
+  }
+
+  .product-miniature__info {
+    background-color: $vgs-light-blue;
+    padding: map.get($spacers, 2);
+    border-radius: 0 0 $border-radius-lg $border-radius-lg;
+
+    .product-miniature__title {
+      color: $vgs-dark-navy;
+      font-size: 0.875rem;
+      font-weight: 500;
+      margin-bottom: map.get($spacers, 1);
+    }
+
+    .product-miniature__pricing {
+      text-align: left;
+
+      .price {
+        color: $primary;
+        font-weight: 700;
+        font-size: 1rem;
+      }
+
+      .price--regular {
+        color: $vgs-dark-text;
+        text-decoration: line-through;
+        font-size: 0.8125rem;
+        font-weight: 400;
+      }
+    }
+  }
+}
+
+// Product flags / badges
+.product-flag {
+  &.flag-new {
+    background-color: $primary;
+    color: $white;
+  }
+
+  &.flag-out-of-stock {
+    background-color: $vgs-yellow;
+    color: $vgs-dark-text;
   }
 }
 

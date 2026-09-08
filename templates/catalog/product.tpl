@@ -131,6 +131,48 @@
               {hook h='displayReassurance'}
             {/block}
 
+            {* Product Info Table - Marca, Referencia, Disponibilidad *}
+            <div class="product-info-table">
+              {if isset($product_manufacturer->id) && $product_manufacturer->id}
+                <div class="info-row">
+                  <span class="info-label">{l s='Brand:' d='Shop.Theme.Catalog'}</span>
+                  <span class="info-value">{$product_manufacturer->name}</span>
+                </div>
+              {/if}
+              {if isset($product.reference_to_display) && $product.reference_to_display neq ''}
+                <div class="info-row">
+                  <span class="info-label">{l s='Reference:' d='Shop.Theme.Catalog'}</span>
+                  <span class="info-value">{$product.reference_to_display}</span>
+                </div>
+              {/if}
+              {if $product.show_availability && $product.availability_message}
+                <div class="info-row">
+                  <span class="info-label">{l s='Availability:' d='Shop.Theme.Catalog'}</span>
+                  <span class="info-value">{$product.availability_message}</span>
+                </div>
+              {/if}
+            </div>
+
+            {* Delivery Info Section *}
+            {if $product.is_virtual == 0 && $product.additional_delivery_times == 1 && $product.delivery_information}
+              <div class="product-delivery-info">
+                <i class="material-icons">local_shipping</i>
+                <span class="delivery-text">{l s='Buy now and receive it tomorrow' d='Shop.Theme.Catalog'}</span>
+              </div>
+            {/if}
+
+            {* Product Attributes Table *}
+            {if $product.grouped_features}
+              <div class="product-features">
+                {foreach from=$product.grouped_features item=feature}
+                  <div class="feature-row">
+                    <span class="feature-label">{$feature.name}</span>
+                    <span class="feature-value">{$feature.value|escape:'htmlall'|nl2br nofilter}</span>
+                  </div>
+                {/foreach}
+              </div>
+            {/if}
+
         </div>
       </div>
     </div>

@@ -32,18 +32,20 @@
     {/if}
     >
     <article
-      class="product-miniature card js-product-miniature p-2 h-100 {block name='product_miniature_item_class'}{/block}"
+      class="product-miniature card js-product-miniature h-100 {block name='product_miniature_item_class'}{/block}"
       data-id-product="{$product.id_product}" data-id-product-attribute="{$product.id_product_attribute}"
       >
-      {include file='catalog/_partials/miniatures/_partials/product-thumb.tpl' thumbExtraClass='mb-2'}
+      {include file='catalog/_partials/miniatures/_partials/product-thumb.tpl' thumbExtraClass=''}
 
-      {include file='catalog/_partials/miniatures/_partials/product-title.tpl'}
+      <div class="product-miniature__info">
+        {include file='catalog/_partials/miniatures/_partials/product-title.tpl'}
 
-      {include file='catalog/_partials/miniatures/_partials/product-prices.tpl'}
+        {include file='catalog/_partials/miniatures/_partials/product-prices.tpl'}
 
-      {block name='product_form'}
-        {include file='catalog/_partials/miniatures/_partials/product-form.tpl'}
-      {/block}
+        {block name='product_form'}
+          {include file='catalog/_partials/miniatures/_partials/product-form.tpl'}
+        {/block}
+      </div>
 
     </article>
   </div>
