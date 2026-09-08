@@ -315,22 +315,24 @@
     background-color: rgba($vgs-light-blue, 0.2);
   }
 
+  // El enlace del título lleva .text-reset de Bootstrap (color: inherit
+  // !important), así que el color se aplica al titular y el enlace lo hereda.
   &__title,
   .product-title {
     margin: 0;
+    color: $vgs-dark-navy;
     font-size: rem-calc(15px);
     font-weight: 600;
     line-height: rem-calc(19.5px);
 
-    a {
-      color: $vgs-dark-navy;
-
-      &:hover,
-      &:focus {
-        color: $primary;
-        text-decoration: none;
-      }
+    a:hover,
+    a:focus {
+      text-decoration: none;
     }
+  }
+
+  &:hover &__title {
+    color: $primary;
   }
 
   // Precios: actual en teal, anterior tachado y porcentaje en píldora.
