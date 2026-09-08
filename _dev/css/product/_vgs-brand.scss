@@ -333,3 +333,28 @@
     }
   }
 }
+
+// Etiquetas sobre la imagen de la ficha. En el diseño el descuento se comunica
+// con la píldora junto al precio, así que la etiqueta se omite para no
+// repetir el dato; las demás adoptan los colores de la marca.
+.product-flags {
+  .product-flag {
+    border-radius: rem-calc(8px);
+    background-color: $primary;
+    color: $white;
+    font-size: rem-calc(12px);
+    font-weight: 500;
+
+    &.discount,
+    &.discount-percentage,
+    &.discount-amount,
+    &.on-sale {
+      display: none;
+    }
+
+    &.out-of-stock {
+      background-color: $vgs-stock-yellow;
+      color: $vgs-dark-text;
+    }
+  }
+}
