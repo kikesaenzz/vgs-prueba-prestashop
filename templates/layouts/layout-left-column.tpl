@@ -26,6 +26,20 @@
 
 {block name='right_column'}{/block}
 
+{* En el diseño las categorías y los filtros comparten una única caja con
+   borde teal, así que se envuelve el contenido de la columna izquierda. *}
+{block name='left_column'}
+  <div id="left-column" class="col-12 col-md-4 col-lg-3">
+    <div class="vgs-sidebar">
+      {if $page.page_name == 'product'}
+        {hook h='displayLeftColumnProduct' product=$product category=$category}
+      {else}
+        {hook h="displayLeftColumn"}
+      {/if}
+    </div>
+  </div>
+{/block}
+
 {block name='content_wrapper'}
   <div id="content-wrapper" class="js-content-wrapper left-column col-12 col-md-8 col-lg-9">
     {hook h="displayContentWrapperTop"}

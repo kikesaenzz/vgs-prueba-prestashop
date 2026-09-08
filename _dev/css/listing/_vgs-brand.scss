@@ -44,56 +44,78 @@
   }
 }
 
-// Columna izquierda: categorías y filtros dentro de una caja con borde.
+// Columna izquierda: categorías y filtros comparten una caja con borde teal.
+// Los módulos de PrestaShop pintan sus propias .card dentro, así que se les
+// quita el marco para que no se dupliquen bordes.
 .vgs-sidebar {
   border: rem-calc(1px) solid $primary;
   border-radius: rem-calc(8px);
   padding: rem-calc(20px) rem-calc(24px);
   background-color: $white;
 
-  &__title {
+  > .card,
+  .card {
     margin: 0;
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  .card-header {
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+  }
+
+  .card-body {
+    padding: 0;
+  }
+
+  // Titulares "Categorías" y "Filtros".
+  .card-title,
+  .h5,
+  .search-filters__title,
+  &__title {
+    margin: 0 0 rem-calc(20px);
     color: $primary;
     font-size: rem-calc(20px);
     font-weight: 700;
     line-height: rem-calc(24.38px);
   }
 
-  &__rule {
-    margin: rem-calc(28px) 0;
+  // Listado de subcategorías: sin fondos ni bordes de list-group.
+  .list-group,
+  .list-group-item {
     border: 0;
-    border-top: rem-calc(1px) solid $primary;
+    padding-left: 0;
+    padding-right: 0;
+    background-color: transparent;
   }
 
-  // Listado de subcategorías con chevron a la derecha.
-  &__links {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  &__link {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: rem-calc(12px);
-    padding: rem-calc(10px) 0;
+  .list-group-item {
+    padding-top: rem-calc(10px);
+    padding-bottom: rem-calc(10px);
     color: $vgs-dark-text;
     font-size: rem-calc(16px);
     font-weight: 400;
 
-    &:hover,
-    &:focus {
-      color: $primary;
-      text-decoration: none;
-    }
+    a {
+      color: $vgs-dark-text;
 
-    svg {
-      flex: 0 0 auto;
-      width: rem-calc(7px);
-      height: rem-calc(12px);
-      fill: currentcolor;
+      &:hover,
+      &:focus {
+        color: $primary;
+        text-decoration: none;
+      }
     }
+  }
+
+  // Filete de separación entre bloques, como en el diseño.
+  #search_filters_wrapper {
+    margin-top: rem-calc(28px);
+    padding-top: rem-calc(28px);
+    border-top: rem-calc(1px) solid $primary;
   }
 }
 
