@@ -1,0 +1,88 @@
+@use "sass:map";
+
+// Pie según el diseño: fondo teal, columna de contacto a la izquierda,
+// tres bloques de enlaces y una línea de copyright separada por un filete.
+
+.footer-container {
+  background-color: $primary;
+  color: $white;
+  padding-top: rem-calc(66px);
+  padding-bottom: 0;
+
+  a {
+    color: $white;
+
+    &:hover,
+    &:focus {
+      color: $vgs-light-blue;
+      text-decoration: none;
+    }
+  }
+
+  // Encabezados de columna.
+  .h3,
+  h3,
+  .block-title,
+  .footer__title {
+    color: $vgs-breadcrumb-bg;
+    font-size: rem-calc(19px);
+    font-weight: 700;
+    text-transform: uppercase;
+    margin-bottom: rem-calc(22px);
+  }
+
+  li {
+    margin-bottom: rem-calc(12px);
+  }
+
+  a,
+  li,
+  p {
+    font-size: rem-calc(15px);
+    font-weight: 400;
+  }
+}
+
+// Bloque de contacto (teléfono, correo y dirección) con iconos.
+.vgs-footer-contact {
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(26px);
+
+  &__item {
+    display: flex;
+    align-items: flex-start;
+    gap: rem-calc(18px);
+    color: $white;
+    font-size: rem-calc(14px);
+    font-weight: 500;
+    line-height: rem-calc(21px);
+  }
+
+  &__icon {
+    flex: 0 0 auto;
+    width: rem-calc(20px);
+    height: rem-calc(20px);
+    stroke: currentcolor;
+    fill: none;
+  }
+}
+
+// Filete blanco + copyright.
+.vgs-footer-bottom {
+  margin-top: rem-calc(48px);
+  border-top: rem-calc(1px) solid $white;
+  padding: rem-calc(20px) 0;
+  text-align: right;
+
+  &__text {
+    margin: 0;
+    color: $white;
+    font-size: rem-calc(14px);
+    font-weight: 400;
+  }
+
+  @include media-breakpoint-down(sm) {
+    text-align: center;
+  }
+}

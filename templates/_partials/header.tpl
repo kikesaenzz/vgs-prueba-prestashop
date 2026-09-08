@@ -29,9 +29,15 @@
 {/block}
 
 {block name='header_nav'}
-    <nav class="header-nav border-bottom bg-light py-1 d-none d-md-block">
+    {* Barra superior amarilla del diseño: horario/teléfono a la izquierda y
+       aviso de envíos a la derecha. Los textos son los del Figma. *}
+    <nav class="header-nav vgs-preheader">
         <div class="container">
-            <div class="row align-items-center">
+            <div class="vgs-preheader__row">
+                <span class="vgs-preheader__item">{l s='Lun-Vie 9:00h - 19:00h | 976 123 456' d='Shop.Theme.Global'}</span>
+                <span class="vgs-preheader__item vgs-preheader__item--end">{l s='Envíos gratuítos por compras SUPERIORES a 50€' d='Shop.Theme.Global'}</span>
+            </div>
+            <div class="row align-items-center d-none">
                 {hook h='displayNav1'}
                 {hook h='displayNav2'}
             </div>

@@ -32,6 +32,35 @@
 <div class="footer-container">
   <div class="container">
     <div class="row">
+
+      {block name='vgs_footer_contact'}
+        {* Bloque de contacto del diseño. Los datos son los del maquetado. *}
+        <div class="col-12 col-lg-4 mb-5 mb-lg-0">
+          <div class="vgs-footer-contact">
+            <p class="vgs-footer-contact__item mb-0">
+              <svg class="vgs-footer-contact__icon" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 5c0-1.1.9-2 2-2h2.3a2 2 0 0 1 1.9 1.5l.7 2.8a2 2 0 0 1-.5 1.9l-1.2 1.2a11 11 0 0 0 5.4 5.4l1.2-1.2a2 2 0 0 1 1.9-.5l2.8.7A2 2 0 0 1 21 16.7V19a2 2 0 0 1-2 2h-1C9.2 21 3 14.8 3 7V5Z"/>
+              </svg>
+              <span>{l s='+34 976 123 456' d='Shop.Theme.Global'}</span>
+            </p>
+            <p class="vgs-footer-contact__item mb-0">
+              <svg class="vgs-footer-contact__icon" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 6h18v12H3z"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="m3 6 9 7 9-7"/>
+              </svg>
+              <span>{l s='info@dominio.com' d='Shop.Theme.Global'}</span>
+            </p>
+            <p class="vgs-footer-contact__item mb-0">
+              <svg class="vgs-footer-contact__icon" viewBox="0 0 24 24" stroke-width="1.5" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 21s7-6.5 7-11.5A7 7 0 0 0 5 9.5C5 14.5 12 21 12 21Z"/>
+                <circle cx="12" cy="9.5" r="2.2"/>
+              </svg>
+              <span>{l s='C/ Calle del cliente nº 45' d='Shop.Theme.Global'}<br>{l s='50011, Zaragoza' d='Shop.Theme.Global'}</span>
+            </p>
+          </div>
+        </div>
+      {/block}
+
       {block name='hook_footer'}
         {hook h='displayFooter'}
       {/block}
@@ -41,5 +70,11 @@
         {hook h='displayFooterAfter'}
       {/block}
     </div>
+
+    {block name='vgs_footer_bottom'}
+      <div class="vgs-footer-bottom">
+        <p class="vgs-footer-bottom__text">{l s='Todos los derechos reservados - Desarrollado por VGS' d='Shop.Theme.Global'}</p>
+      </div>
+    {/block}
   </div>
 </div>

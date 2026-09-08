@@ -1,0 +1,194 @@
+@use "sass:map";
+
+// Cabecera según el diseño: barra amarilla de avisos, buscador con botón
+// teal, menú de categorías y migas sobre fondo azul claro.
+
+.vgs-preheader {
+  background-color: $vgs-yellow;
+  padding: 0;
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: map.get($spacers, 3);
+    min-height: rem-calc(29px);
+  }
+
+  &__item {
+    color: $vgs-dark;
+    font-size: rem-calc(16px);
+    font-weight: 600;
+    line-height: rem-calc(19.5px);
+  }
+
+  // En móvil solo cabe el aviso de envíos, que es el mensaje comercial.
+  @include media-breakpoint-down(sm) {
+    &__row {
+      justify-content: center;
+      padding: map.get($spacers, 1) 0;
+    }
+
+    &__item {
+      font-size: rem-calc(12px);
+      text-align: center;
+
+      &:not(&--end) {
+        display: none;
+      }
+    }
+  }
+}
+
+.header-top {
+  &__content {
+    padding-top: map.get($spacers, 3);
+    padding-bottom: map.get($spacers, 3);
+  }
+}
+
+// Buscador: caja con borde teal y botón sólido a la derecha.
+.search-form {
+  &__form-group {
+    display: flex;
+    align-items: stretch;
+    max-width: rem-calc(563px);
+    margin: 0 auto;
+    border: rem-calc(1.5px) solid $primary;
+    border-radius: rem-calc(5px);
+    overflow: hidden;
+  }
+
+  &__input.form-control {
+    height: rem-calc(30px);
+    padding: 0 rem-calc(10px);
+    border: 0;
+    border-radius: 0;
+    color: $primary;
+    font-size: rem-calc(12px);
+    font-weight: 600;
+    background-color: $white;
+
+    &::placeholder {
+      color: $primary;
+      font-weight: 600;
+      opacity: 1;
+    }
+
+    &:focus {
+      box-shadow: none;
+    }
+  }
+
+  &__btn.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: rem-calc(59px);
+    min-width: rem-calc(59px);
+    height: rem-calc(30px);
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background-color: $primary;
+    color: $white;
+
+    .material-icons {
+      font-size: rem-calc(18px);
+    }
+
+    &:hover,
+    &:focus {
+      background-color: darken($primary, 6%);
+      color: $white;
+      box-shadow: none;
+    }
+  }
+}
+
+// Iconos de cuenta y carrito: en el diseño el carrito va en morado.
+.header-top {
+  &__block--account .header-top__icon,
+  .user-info .material-icons {
+    color: $primary;
+  }
+
+  &__block--cart .header-top__icon,
+  .blockcart .material-icons {
+    color: $vgs-purple;
+  }
+}
+
+// Barra de menú principal.
+.header-nav--main,
+.js-main-menu-wrapper .main-menu,
+#_desktop_top_menu {
+  background-color: $primary;
+}
+
+.main-menu {
+  &__list {
+    display: flex;
+    align-items: center;
+    gap: rem-calc(36px);
+    min-height: rem-calc(38px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__item > a,
+  .top-menu__link {
+    color: $white;
+    font-size: rem-calc(16px);
+    font-weight: 600;
+
+    &:hover,
+    &:focus {
+      color: $vgs-light-blue;
+      text-decoration: none;
+    }
+  }
+}
+
+// Migas de pan sobre la banda azul clara del diseño.
+.breadcrumb-wrapper,
+.vgs-breadcrumb {
+  background-color: $vgs-breadcrumb-bg;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  min-height: rem-calc(41px);
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  font-size: rem-calc(14px);
+
+  li,
+  &-item {
+    display: flex;
+    align-items: center;
+    color: $primary;
+
+    a,
+    span {
+      color: $primary;
+      font-weight: 400;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    + li::before,
+    + .breadcrumb-item::before {
+      color: $primary;
+      content: "›";
+      padding: 0 rem-calc(8px);
+      font-size: rem-calc(18px);
+      line-height: 1;
+    }
+  }
+}

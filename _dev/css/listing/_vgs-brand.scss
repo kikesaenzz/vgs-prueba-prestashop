@@ -1,103 +1,441 @@
 @use "sass:map";
 
-// Ajustes de marca para la página de Categoría, según el diseño de Figma.
+// Página de categoría: banda de título, columna de filtros, rejilla de
+// productos, tarjeta y paginación, según el diseño.
 
-.block-category {
+// Banda teal con el nombre de la categoría.
+.vgs-category-title {
   background-color: $primary;
-  border-radius: $border-radius;
-  padding: map.get($spacers, 4);
-  margin-bottom: map.get($spacers, 4);
+  color: $white;
 
-  .h1 {
+  &__inner {
+    display: flex;
+    align-items: center;
+    gap: rem-calc(20px);
+    min-height: rem-calc(88px);
+  }
+
+  &__icon {
+    flex: 0 0 auto;
+    width: rem-calc(58px);
+    height: rem-calc(58px);
+    object-fit: contain;
+  }
+
+  &__text {
+    margin: 0;
     color: $white;
-    margin-bottom: 0;
+    font-size: rem-calc(40px);
+    font-weight: 700;
+    line-height: rem-calc(48.76px);
+    text-transform: uppercase;
   }
 
-  #category-description {
-    color: rgba($white, 0.85);
+  @include media-breakpoint-down(sm) {
+    &__text {
+      font-size: rem-calc(26px);
+      line-height: 1.2;
+    }
+
+    &__icon {
+      width: rem-calc(40px);
+      height: rem-calc(40px);
+    }
   }
 }
 
-.active_filters {
-  .filter-block,
-  .filter-block a {
-    background-color: rgba($primary, 0.1);
+// Columna izquierda: categorías y filtros dentro de una caja con borde.
+.vgs-sidebar {
+  border: rem-calc(1px) solid $primary;
+  border-radius: rem-calc(8px);
+  padding: rem-calc(20px) rem-calc(24px);
+  background-color: $white;
+
+  &__title {
+    margin: 0;
     color: $primary;
-    border-radius: 50rem;
+    font-size: rem-calc(20px);
+    font-weight: 700;
+    line-height: rem-calc(24.38px);
+  }
+
+  &__rule {
+    margin: rem-calc(28px) 0;
+    border: 0;
+    border-top: rem-calc(1px) solid $primary;
+  }
+
+  // Listado de subcategorías con chevron a la derecha.
+  &__links {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: rem-calc(12px);
+    padding: rem-calc(10px) 0;
+    color: $vgs-dark-text;
+    font-size: rem-calc(16px);
+    font-weight: 400;
+
+    &:hover,
+    &:focus {
+      color: $primary;
+      text-decoration: none;
+    }
+
+    svg {
+      flex: 0 0 auto;
+      width: rem-calc(7px);
+      height: rem-calc(12px);
+      fill: currentcolor;
+    }
   }
 }
 
-// Pagination styling
-.pagination {
-  .page-item {
-    .page-link {
-      color: $primary;
-      border-color: $vgs-light-blue;
+// Bloque de filtros (módulo de facetas de PrestaShop).
+#search_filters,
+.search-filters {
+  border: 0;
+  padding: 0;
+  background-color: transparent;
+
+  .facet {
+    border: 0;
+    padding: 0;
+    margin-bottom: rem-calc(28px);
+
+    &__title,
+    .facet-title,
+    .h6 {
+      color: $vgs-purple;
+      font-size: rem-calc(16px);
+      font-weight: 600;
+      line-height: rem-calc(19.5px);
+      margin-bottom: rem-calc(20px);
+    }
+  }
+
+  .facet-label {
+    display: flex;
+    align-items: center;
+    gap: rem-calc(10px);
+    margin-bottom: rem-calc(12px);
+    color: $vgs-dark;
+    font-size: rem-calc(15px);
+    font-weight: 400;
+
+    a {
+      color: inherit;
 
       &:hover {
-        background-color: $vgs-light-blue;
-        color: $primary;
+        text-decoration: none;
       }
     }
+  }
 
-    &.active .page-link {
-      background-color: $primary;
-      border-color: $primary;
-      color: $white;
-    }
+  // Casillas: cuadrado redondeado teal cuando está activa.
+  .custom-checkbox input[type="checkbox"] + span,
+  .custom-control-label::before {
+    width: rem-calc(20px);
+    height: rem-calc(20px);
+    border: 0;
+    border-radius: rem-calc(4px);
+    background-color: $vgs-border-grey;
+  }
 
-    &.disabled .page-link {
-      color: $gray-400;
+  .custom-checkbox input[type="checkbox"]:checked + span,
+  .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: $primary;
+    border-color: $primary;
+  }
+}
+
+// Barra de filtros activos.
+.vgs-active-filters {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: rem-calc(16px);
+  margin-bottom: rem-calc(28px);
+
+  &__label {
+    margin: 0;
+    color: $vgs-dark-text;
+    font-size: rem-calc(16px);
+    font-weight: 600;
+  }
+
+  &__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: rem-calc(10px);
+    min-height: rem-calc(40px);
+    padding: 0 rem-calc(16px);
+    border: rem-calc(1px) solid $primary;
+    border-radius: rem-calc(20px);
+    background-color: $white;
+    color: $primary;
+    font-size: rem-calc(14px);
+    font-weight: 500;
+
+    &:hover,
+    &:focus {
+      background-color: rgba($vgs-light-blue, 0.3);
+      color: $primary;
+      text-decoration: none;
     }
   }
 }
 
-// Product card info section for listing
+// Rejilla de productos: 3 columnas en escritorio con 20px de separación.
+.products {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: rem-calc(20px);
+
+  @include media-breakpoint-up(sm) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @include media-breakpoint-up(lg) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+// Tarjeta de producto.
 .product-miniature {
-  .product-miniature__info {
-    background-color: $vgs-light-blue;
-    padding: map.get($spacers, 2);
-    border-radius: 0 0 $border-radius-lg $border-radius-lg;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: rem-calc(1px) solid $primary;
+  border-radius: rem-calc(8px);
+  background-color: $white;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease;
 
-    .product-miniature__title {
-      color: $vgs-dark-navy;
-      font-size: 0.875rem;
-      font-weight: 500;
-      margin-bottom: map.get($spacers, 1);
+  &:hover {
+    box-shadow: 0 rem-calc(6px) rem-calc(18px) rgba($primary, 0.18);
+  }
 
-      a {
-        color: inherit;
-      }
+  // Zona de imagen cuadrada.
+  .product-thumbnail {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1 / 1;
+    padding: rem-calc(24px);
+    background-color: $white;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      border-radius: rem-calc(8px);
+      object-fit: contain;
     }
+  }
 
-    .product-miniature__pricing {
-      text-align: left;
+  // Franja inferior con título y precio.
+  &__info,
+  .product-description {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: rem-calc(10px);
+    min-height: rem-calc(104px);
+    margin-top: auto;
+    padding: rem-calc(15px) rem-calc(20px);
+    background-color: rgba($vgs-light-blue, 0.2);
+  }
 
-      .price {
+  &__title,
+  .product-title {
+    margin: 0;
+    font-size: rem-calc(15px);
+    font-weight: 600;
+    line-height: rem-calc(19.5px);
+
+    a {
+      color: $vgs-dark-navy;
+
+      &:hover,
+      &:focus {
         color: $primary;
-        font-weight: 700;
-        font-size: 1rem;
-      }
-
-      .price--regular {
-        color: $vgs-dark-text;
-        text-decoration: line-through;
-        font-size: 0.8125rem;
-        font-weight: 400;
+        text-decoration: none;
       }
     }
   }
+
+  // Precios: actual en teal, anterior tachado y porcentaje en píldora.
+  .product-price-and-shipping,
+  &__pricing {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: rem-calc(10px);
+  }
+
+  .price,
+  .product-price {
+    color: $primary;
+    font-size: rem-calc(18px);
+    font-weight: 700;
+    line-height: rem-calc(19.8px);
+  }
+
+  .regular-price,
+  .product-price--old {
+    color: $vgs-dark-text;
+    font-size: rem-calc(18px);
+    font-weight: 400;
+    text-decoration: line-through;
+  }
+
+  .discount-percentage,
+  .product-discount-percentage {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: rem-calc(58px);
+    min-height: rem-calc(27px);
+    padding: 0 rem-calc(12px);
+    border-radius: rem-calc(62px);
+    background-color: rgba($vgs-light-purple, 0.5);
+    color: $vgs-purple;
+    font-size: rem-calc(12px);
+    font-weight: 500;
+  }
 }
 
-// Product status badges
+// Etiquetas de estado sobre la tarjeta.
+.product-flags {
+  position: absolute;
+  top: rem-calc(10px);
+  left: rem-calc(10px);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  gap: rem-calc(6px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
 .product-flag {
-  &.flag-new {
+  display: inline-flex;
+  align-items: center;
+  min-height: rem-calc(25px);
+  padding: 0 rem-calc(10px);
+  border-radius: rem-calc(8px);
+  background-color: $primary;
+  color: $white;
+  font-size: rem-calc(12px);
+  font-weight: 500;
+  line-height: rem-calc(13.2px);
+
+  &.out-of-stock,
+  &.flag-out-of-stock {
+    background-color: $vgs-stock-yellow;
+    color: $vgs-dark-text;
+  }
+}
+
+// Pie del listado: recuento y paginación.
+.vgs-listing-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: rem-calc(20px);
+  margin-top: rem-calc(40px);
+
+  &__count {
+    margin: 0;
+    color: $vgs-dark-text;
+    font-size: rem-calc(14px);
+    font-weight: 500;
+  }
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(5px);
+  margin: 0;
+
+  .page-list {
+    display: flex;
+    align-items: center;
+    gap: rem-calc(5px);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .page-item {
+    display: flex;
+  }
+
+  .page-link,
+  a,
+  span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: rem-calc(40px);
+    height: rem-calc(40px);
+    padding: 0 rem-calc(10px);
+    border: 0;
+    border-radius: rem-calc(8px);
+    background-color: $vgs-light-blue;
+    color: $vgs-dark-text;
+    font-size: rem-calc(14px);
+    font-weight: 500;
+
+    &:hover,
+    &:focus {
+      background-color: darken($vgs-light-blue, 6%);
+      color: $vgs-dark-text;
+      text-decoration: none;
+    }
+  }
+
+  .current a,
+  .active .page-link,
+  .page-item.active a {
     background-color: $primary;
     color: $white;
+    font-weight: 700;
   }
 
-  &.flag-out-of-stock {
-    background-color: $vgs-yellow;
-    color: $vgs-dark-text;
+  // Botones "Anterior" y "Siguiente": fondo blanco con borde.
+  .previous a,
+  .next a,
+  .previous .page-link,
+  .next .page-link {
+    gap: rem-calc(8px);
+    padding: 0 rem-calc(16px);
+    border: rem-calc(1px) solid $primary;
+    background-color: $white;
+    color: $primary;
+
+    &:hover,
+    &:focus {
+      background-color: rgba($vgs-light-blue, 0.35);
+      color: $primary;
+    }
+  }
+
+  .disabled a,
+  .disabled .page-link {
+    opacity: 0.5;
+    pointer-events: none;
   }
 }

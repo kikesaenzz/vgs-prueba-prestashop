@@ -1,3 +1,13 @@
 $grid-columns:                12;
 $grid-gutter-width:           rem-calc(20px);
 $grid-row-columns:            6;
+
+// El diseño trabaja sobre un lienzo de 1600px con el contenido de x=145 a
+// x=1455, es decir 1310px. Con el gutter de 20px del tema, el contenedor
+// equivalente son 1330px.
+$container-max-widths: (
+  sm: rem-calc(540px),
+  md: rem-calc(720px),
+  lg: rem-calc(960px),
+  xl: rem-calc(1330px)
+);

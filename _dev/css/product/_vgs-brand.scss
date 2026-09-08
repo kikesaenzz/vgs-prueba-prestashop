@@ -1,201 +1,334 @@
 @use "sass:map";
 
-// Ajustes de marca para la página de Ficha de Producto, según el diseño de Figma.
+// Ficha de producto: galería a la izquierda, bloque de compra a la derecha
+// y, debajo, la descripción ampliada. Solo estilos: la lógica de
+// combinaciones y del carrito es la nativa de PrestaShop.
 
-// Product page title
-.product-container {
-  .h1 {
+.product-page,
+#product {
+  // Galería.
+  .product-cover,
+  .product-gallery__cover {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 534 / 533;
+    border: rem-calc(1px) solid $primary;
+    border-radius: rem-calc(8px);
+    background-color: $white;
+    overflow: hidden;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+    }
+  }
+
+  .product-images,
+  .product-gallery__thumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: rem-calc(12px);
+    margin-top: rem-calc(16px);
+    padding: 0;
+    list-style: none;
+
+    img,
+    .thumb {
+      width: rem-calc(88px);
+      height: rem-calc(88px);
+      border: rem-calc(1px) solid $primary;
+      border-radius: rem-calc(6px);
+      background-color: $white;
+      object-fit: contain;
+      cursor: pointer;
+    }
+  }
+
+  // Título y descripción corta.
+  .product-title,
+  h1.h1 {
     color: $primary;
-    font-weight: 700;
-  }
-}
-
-// Product prices - purple accent
-.product-prices {
-  .price {
-    color: $vgs-purple;
-    font-weight: 700;
-  }
-
-  .price--lg {
-    font-size: 1.75rem;
-  }
-
-  .price--regular {
-    color: $vgs-dark-text;
-    text-decoration: line-through;
-    font-size: 1rem;
-    font-weight: 400;
-  }
-
-  .badge-danger {
-    background-color: $vgs-purple;
-    color: $white;
-    font-weight: 500;
-  }
-}
-
-// Add to cart button - purple
-.product-add-to-cart {
-  .btn-primary {
-    background-color: $vgs-purple;
-    border-color: $vgs-purple;
+    font-size: rem-calc(32px);
     font-weight: 600;
-    padding: 0.75rem 2rem;
-    border-radius: $border-radius;
+    line-height: rem-calc(41.6px);
+    margin-bottom: rem-calc(20px);
+  }
 
-    &:hover,
-    &:focus {
-      background-color: darken($vgs-purple, 10%);
-      border-color: darken($vgs-purple, 10%);
-    }
-
-    &:active {
-      background-color: darken($vgs-purple, 15%);
-      border-color: darken($vgs-purple, 15%);
-    }
+  .product-description-short {
+    color: $black;
+    font-size: rem-calc(16px);
+    font-weight: 400;
+    line-height: rem-calc(32px);
   }
 }
 
-// Quantity input styling
-.product-add-to-cart {
-  .input-touchspin {
-    border: 1px solid $gray-300;
-    border-radius: $border-radius;
-    max-width: 140px;
+// Banda con marca, referencia y disponibilidad.
+.vgs-product-meta {
+  display: flex;
+  flex-wrap: wrap;
+  margin: rem-calc(24px) 0;
+  background-color: rgba($vgs-light-blue, 0.2);
 
-    input {
-      text-align: center;
-      font-weight: 700;
-      border: none;
-      box-shadow: none;
+  &__item {
+    flex: 1 1 rem-calc(200px);
+    padding: rem-calc(14px) rem-calc(20px);
+    color: $vgs-dark-text;
+    font-size: rem-calc(15px);
+    font-weight: 600;
+    line-height: rem-calc(19.5px);
+
+    + .vgs-product-meta__item {
+      border-left: rem-calc(1px) solid $primary;
     }
 
-    .input-group-btn-vertical {
-      .btn {
-        border: none;
-        background: transparent;
-        color: $vgs-dark-text;
+    @include media-breakpoint-down(sm) {
+      flex-basis: 100%;
 
-        &:hover {
-          background: $gray-100;
-        }
+      + .vgs-product-meta__item {
+        border-left: 0;
+        border-top: rem-calc(1px) solid $primary;
       }
     }
   }
-}
 
-// Product info table (Marca, Referencia, Disponibilidad)
-.product-info-table {
-  background-color: $vgs-light-blue;
-  border-radius: $border-radius;
-  padding: map.get($spacers, 3);
-  margin-bottom: map.get($spacers, 3);
-
-  .info-row {
-    display: flex;
-    padding: map.get($spacers, 1) 0;
-    font-size: 0.875rem;
-
-    &:not(:last-child) {
-      border-bottom: 1px solid rgba($primary, 0.15);
-    }
-
-    .info-label {
-      color: $primary;
-      font-weight: 600;
-      min-width: 160px;
-    }
-
-    .info-value {
-      color: $vgs-dark-text;
-    }
+  &__label {
+    color: $vgs-dark-text;
   }
 }
 
-// Delivery info section
-.product-delivery-info {
-  background-color: $vgs-light-purple;
-  border-radius: $border-radius;
-  padding: map.get($spacers, 3);
-  margin-bottom: map.get($spacers, 3);
+// Precios: el actual en morado y grande.
+.product-prices {
   display: flex;
   align-items: center;
-  gap: map.get($spacers, 2);
+  flex-wrap: wrap;
+  gap: rem-calc(16px);
+  margin: rem-calc(24px) 0;
 
-  .material-icons {
+  .current-price,
+  .product-price {
     color: $vgs-purple;
-    font-size: 1.5rem;
+    font-size: rem-calc(40px);
+    font-weight: 700;
+    line-height: 1;
   }
 
-  .delivery-text {
+  .regular-price {
+    color: $vgs-dark-text;
+    font-size: rem-calc(24px);
+    font-weight: 400;
+    text-decoration: line-through;
+  }
+
+  .discount,
+  .discount-percentage {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: rem-calc(87px);
+    min-height: rem-calc(36px);
+    padding: 0 rem-calc(16px);
+    border-radius: rem-calc(62px);
+    background-color: rgba($vgs-light-purple, 0.5);
     color: $vgs-purple;
+    font-size: rem-calc(20px);
     font-weight: 500;
   }
 }
 
-// Product attributes table
-.product-features {
-  margin-top: map.get($spacers, 3);
-
-  .feature-row {
+// Selector de cantidad y botón de compra.
+.product-add-to-cart {
+  .product-quantity {
     display: flex;
-    padding: map.get($spacers, 2) map.get($spacers, 3);
-    font-size: 0.875rem;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: rem-calc(20px);
+  }
 
-    &:nth-child(odd) {
+  .qty {
+    .input-group,
+    .js-quantity-wrapper {
+      width: rem-calc(128px);
+      height: rem-calc(46px);
+      border: rem-calc(1px) solid $primary;
+      border-radius: rem-calc(4px);
+      overflow: hidden;
+    }
+
+    input.form-control {
+      height: 100%;
+      border: 0;
+      color: $vgs-dark-text;
+      font-size: rem-calc(16px);
+      font-weight: 500;
+      text-align: center;
+
+      &:focus {
+        box-shadow: none;
+      }
+    }
+
+    .btn {
+      border: 0;
       background-color: $white;
+      color: $vgs-dark-text;
+
+      &:hover {
+        background-color: rgba($vgs-light-blue, 0.35);
+      }
+    }
+  }
+
+  .add-to-cart {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: rem-calc(265px);
+    min-height: rem-calc(48px);
+    padding: 0 rem-calc(24px);
+    border: 0;
+    border-radius: rem-calc(62px);
+    background-color: $vgs-purple;
+    color: $white;
+    font-size: rem-calc(15px);
+    font-weight: 700;
+    text-transform: uppercase;
+
+    &:hover:not(:disabled),
+    &:focus:not(:disabled) {
+      background-color: darken($vgs-purple, 8%);
+      color: $white;
+    }
+
+    &:disabled {
+      opacity: 0.55;
+    }
+
+    @include media-breakpoint-down(sm) {
+      min-width: 100%;
+    }
+  }
+}
+
+// Aviso de entrega.
+.vgs-product-delivery {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(10px);
+  margin: rem-calc(24px) 0;
+  padding: rem-calc(14px) rem-calc(20px);
+  background-color: rgba($vgs-light-purple, 0.3);
+  color: $vgs-purple;
+  font-size: rem-calc(15px);
+  font-weight: 600;
+
+  svg {
+    flex: 0 0 auto;
+    width: rem-calc(20px);
+    height: rem-calc(20px);
+    fill: currentcolor;
+  }
+}
+
+// Tabla de características: dos pares etiqueta/valor por fila.
+.vgs-product-features {
+  border: rem-calc(1px) solid $primary;
+
+  &__row {
+    display: flex;
+    flex-wrap: wrap;
+
+    + .vgs-product-features__row {
+      border-top: rem-calc(1px) solid $primary;
     }
 
     &:nth-child(even) {
-      background-color: $vgs-light-blue;
-    }
-
-    .feature-label {
-      color: $primary;
-      font-weight: 600;
-      min-width: 160px;
-    }
-
-    .feature-value {
-      color: $vgs-dark-text;
+      background-color: rgba($vgs-light-blue, 0.2);
     }
   }
-}
 
-// Delivery information text
-.tax-shipping-delivery-label {
-  color: $vgs-dark-text;
-  font-size: 0.875rem;
+  &__cell {
+    display: flex;
+    align-items: center;
+    gap: rem-calc(16px);
+    flex: 1 1 50%;
+    min-height: rem-calc(43px);
+    padding: rem-calc(10px) rem-calc(15px);
 
-  .delivery-information {
-    color: $primary;
-    font-weight: 500;
-  }
-}
+    + .vgs-product-features__cell {
+      border-left: rem-calc(1px) solid $primary;
+    }
 
-// Product description
-.product-description {
-  color: $vgs-dark-text;
-  line-height: 1.6;
-}
+    @include media-breakpoint-down(sm) {
+      flex-basis: 100%;
 
-// Product tabs
-.product-tabs {
-  .nav-tabs {
-    .nav-link {
-      color: $primary;
-      font-weight: 500;
-
-      &:hover {
-        border-color: $vgs-light-blue $vgs-light-blue transparent;
-        color: darken($primary, 10%);
+      + .vgs-product-features__cell {
+        border-left: 0;
+        border-top: rem-calc(1px) solid $primary;
       }
+    }
+  }
 
-      &.active {
-        color: $primary;
-        border-color: $primary $primary $white;
-        font-weight: 600;
+  &__label {
+    flex: 0 0 45%;
+    color: $primary;
+    font-size: rem-calc(14px);
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  &__value {
+    color: $vgs-dark-text;
+    font-size: rem-calc(14px);
+    font-weight: 400;
+  }
+}
+
+// Bloque inferior "Información del producto".
+.vgs-product-info {
+  margin-top: rem-calc(56px);
+
+  &__title {
+    color: $primary;
+    font-size: rem-calc(24px);
+    font-weight: 600;
+    line-height: rem-calc(31.2px);
+    margin-bottom: rem-calc(20px);
+  }
+
+  &__rule {
+    margin: 0 0 rem-calc(32px);
+    border: 0;
+    border-top: rem-calc(1px) solid $primary;
+  }
+
+  // La descripción larga la escribe el comerciante: se le da forma a los
+  // encabezados que traiga, con el mismo tratamiento del diseño.
+  .product-description {
+    color: $black;
+    font-size: rem-calc(16px);
+    font-weight: 400;
+    line-height: rem-calc(32px);
+
+    h2,
+    h3,
+    h4 {
+      display: flex;
+      align-items: baseline;
+      gap: rem-calc(10px);
+      margin-top: rem-calc(32px);
+      color: $vgs-purple;
+      font-size: rem-calc(16px);
+      font-weight: 700;
+
+      &::before {
+        flex: 0 0 auto;
+        color: $vgs-purple;
+        content: "✓";
+        font-size: rem-calc(16px);
       }
     }
   }

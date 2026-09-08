@@ -1,4 +1,6 @@
-$font-family-sans-serif:      "Roboto", -apple-system, blinkmacsystemfont, "Segoe UI", roboto, "Helvetica Neue", arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+// Montserrat es la tipografía del diseño; Roboto queda de respaldo porque el
+// tema ya la sirve en local.
+$font-family-sans-serif:      "Montserrat", "Roboto", -apple-system, blinkmacsystemfont, "Segoe UI", roboto, "Helvetica Neue", arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 $font-family-base:            $font-family-sans-serif;
 
 $font-size-base:              rem-calc(16px);

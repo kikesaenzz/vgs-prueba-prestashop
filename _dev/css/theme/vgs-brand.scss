@@ -1,78 +1,12 @@
-@use "sass:map";
+// Estilos de marca de la prueba técnica VGS (globales: cabecera y pie).
+//
+// Se importan al final de theme.scss para que ganen por orden de cascada sin
+// necesitar !important, y se apoyan en las variables de Bootstrap/Falcon
+// declaradas en abstracts/variables.
+//
+// Los estilos propios de la página de categoría y de la ficha de producto van
+// en sus bundles correspondientes (listing/_vgs-brand.scss y
+// product/_vgs-brand.scss) para no cargarlos en páginas que no los usan.
 
-// Ajustes de marca para la prueba técnica VGS (global: se aplica en todas
-// las páginas). Se importa al final de theme.scss para que gane sin
-// necesitar !important.
-
-.product-miniature {
-  border-radius: $border-radius-lg;
-  transition:
-    box-shadow 0.2s ease,
-    transform 0.2s ease;
-  overflow: hidden;
-
-  &:hover {
-    box-shadow: $box-shadow;
-    transform: translateY(-2px);
-  }
-
-  .product-thumbnail img {
-    border-radius: $border-radius;
-  }
-
-  .product-miniature__info {
-    background-color: $vgs-light-blue;
-    padding: map.get($spacers, 2);
-    border-radius: 0 0 $border-radius-lg $border-radius-lg;
-
-    .product-miniature__title {
-      color: $vgs-dark-navy;
-      font-size: 0.875rem;
-      font-weight: 500;
-      margin-bottom: map.get($spacers, 1);
-    }
-
-    .product-miniature__pricing {
-      text-align: left;
-
-      .price {
-        color: $primary;
-        font-weight: 700;
-        font-size: 1rem;
-      }
-
-      .price--regular {
-        color: $vgs-dark-text;
-        text-decoration: line-through;
-        font-size: 0.8125rem;
-        font-weight: 400;
-      }
-    }
-  }
-}
-
-// Product flags / badges
-.product-flag {
-  &.flag-new {
-    background-color: $primary;
-    color: $white;
-  }
-
-  &.flag-out-of-stock {
-    background-color: $vgs-yellow;
-    color: $vgs-dark-text;
-  }
-}
-
-.footer-container {
-  background-color: $primary;
-  color: rgba($white, 0.8);
-
-  a {
-    color: $white;
-  }
-
-  .h3 {
-    color: $white;
-  }
-}
+@import "vgs/header";
+@import "vgs/footer";
