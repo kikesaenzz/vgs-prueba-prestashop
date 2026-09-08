@@ -26,33 +26,33 @@
   <div class="product-prices js-product-prices mb-3">
 
     {block name='product_price'}
+      {* En el diseño los tres elementos van en una misma línea: precio actual
+         en morado, precio anterior tachado y el descuento en una píldora. *}
       <div class="product-price">
+        <span class="current-price">
+          {capture name='custom_price'}{hook h='displayProductPriceBlock' product=$product type='custom_price' hook_origin='product_sheet'}{/capture}
+          {if '' !== $smarty.capture.custom_price}
+            {$smarty.capture.custom_price nofilter}
+          {else}
+            {$product.price}
+          {/if}
+        </span>
+
+        {block name='product_discount'}
+          {if $product.has_discount}
+            <span class="regular-price">{$product.regular_price}</span>
+          {/if}
+        {/block}
+
         {if $product.has_discount}
           {if $product.discount_type === 'percentage'}
-            <span class="badge badge-danger">{l s='Save %percentage%' d='Shop.Theme.Catalog' sprintf=['%percentage%' => $product.discount_percentage_absolute]}</span>
+            <span class="discount">-{$product.discount_percentage_absolute}</span>
           {else}
-            <span class="badge badge-danger">
-              {l s='Save %amount%' d='Shop.Theme.Catalog' sprintf=['%amount%' => $product.discount_to_display]}
-            </span>
+            <span class="discount">-{$product.discount_to_display}</span>
           {/if}
         {/if}
 
-        <div>
-          <span class="price price--lg">
-            {capture name='custom_price'}{hook h='displayProductPriceBlock' product=$product type='custom_price' hook_origin='product_sheet'}{/capture}
-            {if '' !== $smarty.capture.custom_price}
-              {$smarty.capture.custom_price nofilter}
-            {else}
-              {$product.price}
-            {/if}
-          </span>
-          {block name='product_discount'}
-            {if $product.has_discount}
-              <span class="ml-2 price price--regular">{$product.regular_price}</span>
-            {/if}
-          {/block}
-          {hook h='displayProductPriceBlock' product=$product type="old_price"}
-        </div>
+        {hook h='displayProductPriceBlock' product=$product type="old_price"}
 
         {block name='product_unit_price'}
           {if $displayUnitPrice}

@@ -6,9 +6,9 @@
 
 .product-page,
 #product {
-  // Galería.
-  .product-cover,
-  .product-gallery__cover {
+  // Galería: la imagen principal va en una caja con borde teal y radio 8, y
+  // las miniaturas debajo con el mismo tratamiento.
+  .product-main-images {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -25,19 +25,19 @@
       height: auto;
       object-fit: contain;
     }
+
+    &__list,
+    .swiper-slide {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
-  .product-images,
-  .product-gallery__thumbs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: rem-calc(12px);
+  .product-thumbs {
     margin-top: rem-calc(16px);
-    padding: 0;
-    list-style: none;
 
-    img,
-    .thumb {
+    &__elem img {
       width: rem-calc(88px);
       height: rem-calc(88px);
       border: rem-calc(1px) solid $primary;

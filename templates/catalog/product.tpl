@@ -64,16 +64,38 @@
         <div class="col-md-7 mb-4">
           {block name='page_header_container'}
             {block name='page_header'}
-              <h1 class="h1">{block name='page_title'}{$product.name}{/block}</h1>
+              <h1 class="product-title">{block name='page_title'}{$product.name}{/block}</h1>
             {/block}
-          {/block}
-          {block name='product_prices'}
-            {include file='catalog/_partials/product-prices.tpl'}
           {/block}
 
           <div class="product-information ">
             {block name='product_description_short'}
-              <div id="product-description-short-{$product.id}" class="product-description cms-content">{$product.description_short nofilter}</div>
+              <div id="product-description-short-{$product.id}" class="product-description-short cms-content">{$product.description_short nofilter}</div>
+            {/block}
+
+            {* Banda con marca, referencia y disponibilidad, como en el diseño. *}
+            {block name='vgs_product_meta'}
+              <div class="vgs-product-meta">
+                {if isset($product_manufacturer->id) && $product_manufacturer->id}
+                  <p class="vgs-product-meta__item mb-0">
+                    <span class="vgs-product-meta__label">{l s='Marca:' d='Shop.Theme.Catalog'}</span> {$product_manufacturer->name}
+                  </p>
+                {/if}
+                {if isset($product.reference_to_display) && $product.reference_to_display neq ''}
+                  <p class="vgs-product-meta__item mb-0">
+                    <span class="vgs-product-meta__label">{l s='Referencia:' d='Shop.Theme.Catalog'}</span> {$product.reference_to_display}
+                  </p>
+                {/if}
+                {if $product.show_availability && $product.availability_message}
+                  <p class="vgs-product-meta__item mb-0">
+                    <span class="vgs-product-meta__label">{l s='Disponibilidad:' d='Shop.Theme.Catalog'}</span> {$product.availability_message}
+                  </p>
+                {/if}
+              </div>
+            {/block}
+
+            {block name='product_prices'}
+              {include file='catalog/_partials/product-prices.tpl'}
             {/block}
 
             {if $product.is_customizable && count($product.customizations.fields)}
@@ -131,44 +153,28 @@
               {hook h='displayReassurance'}
             {/block}
 
-            {* Product Info Table - Marca, Referencia, Disponibilidad *}
-            <div class="product-info-table">
-              {if isset($product_manufacturer->id) && $product_manufacturer->id}
-                <div class="info-row">
-                  <span class="info-label">{l s='Brand:' d='Shop.Theme.Catalog'}</span>
-                  <span class="info-value">{$product_manufacturer->name}</span>
-                </div>
-              {/if}
-              {if isset($product.reference_to_display) && $product.reference_to_display neq ''}
-                <div class="info-row">
-                  <span class="info-label">{l s='Reference:' d='Shop.Theme.Catalog'}</span>
-                  <span class="info-value">{$product.reference_to_display}</span>
-                </div>
-              {/if}
-              {if $product.show_availability && $product.availability_message}
-                <div class="info-row">
-                  <span class="info-label">{l s='Availability:' d='Shop.Theme.Catalog'}</span>
-                  <span class="info-value">{$product.availability_message}</span>
-                </div>
-              {/if}
-            </div>
-
-            {* Delivery Info Section *}
-            {if $product.is_virtual == 0 && $product.additional_delivery_times == 1 && $product.delivery_information}
-              <div class="product-delivery-info">
-                <i class="material-icons">local_shipping</i>
-                <span class="delivery-text">{l s='Buy now and receive it tomorrow' d='Shop.Theme.Catalog'}</span>
+            {* Aviso de entrega. *}
+            {* Aviso comercial fijo del diseño para productos físicos. *}{if $product.is_virtual == 0}
+              <div class="vgs-product-delivery">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M3 6h11v9H3zM14 9h4l3 3v3h-7z"/>
+                  <circle cx="7" cy="17" r="2"/>
+                  <circle cx="17.5" cy="17" r="2"/>
+                </svg>
+                <span>{l s='Cómpralo ahora y recíbelo mañana' d='Shop.Theme.Catalog'}</span>
               </div>
             {/if}
 
-            {* Product Attributes Table *}
+            {* Tabla de características: dos pares etiqueta/valor por fila. *}
             {if $product.grouped_features}
-              <div class="product-features">
-                {foreach from=$product.grouped_features item=feature}
-                  <div class="feature-row">
-                    <span class="feature-label">{$feature.name}</span>
-                    <span class="feature-value">{$feature.value|escape:'htmlall'|nl2br nofilter}</span>
-                  </div>
+              <div class="vgs-product-features">
+                {foreach from=$product.grouped_features item=feature name=features}
+                  {if $smarty.foreach.features.index % 2 === 0}<div class="vgs-product-features__row">{/if}
+                    <div class="vgs-product-features__cell">
+                      <span class="vgs-product-features__label">{$feature.name}</span>
+                      <span class="vgs-product-features__value">{$feature.value|escape:'htmlall'|nl2br nofilter}</span>
+                    </div>
+                  {if $smarty.foreach.features.index % 2 === 1 || $smarty.foreach.features.last}</div>{/if}
                 {/foreach}
               </div>
             {/if}
@@ -176,6 +182,21 @@
         </div>
       </div>
     </div>
+    {* En el diseño la descripción larga no va en pestañas: es un bloque a
+       ancho completo con su titular y un filete teal. Los detalles, adjuntos y
+       contenido extra siguen disponibles debajo mediante las pestañas. *}
+    {block name='vgs_product_info'}
+      {if $product.description}
+        <section class="vgs-product-info">
+          <h2 class="vgs-product-info__title">{l s='Información del producto' d='Shop.Theme.Catalog'}</h2>
+          <hr class="vgs-product-info__rule">
+          {cms_images_block webpEnabled=$webpEnabled}
+            <div class="product-description cms-content">{$product.description nofilter}</div>
+          {/cms_images_block}
+        </section>
+      {/if}
+    {/block}
+
     {include file="catalog/_partials/product-tabs.tpl"}
 
     {block name='product_footer'}

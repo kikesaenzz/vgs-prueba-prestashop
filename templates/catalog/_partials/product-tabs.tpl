@@ -47,13 +47,9 @@
 
     <div class="card-body">
       <div class="tab-content" id="tab-content">
-        <div class="tab-pane fade in" id="description" role="tabpanel">
-          {block name='product_description'}
-            {cms_images_block webpEnabled=$webpEnabled}
-              <div class="product-description cms-content">{$product.description nofilter}</div>
-            {/cms_images_block}
-          {/block}
-        </div>
+        {* La descripción se muestra arriba, en el bloque "Información del
+           producto", así que aquí no se repite. *}
+        {block name='product_description'}{/block}
 
         {block name='product_details'}
           {include file='catalog/_partials/product-details.tpl'}
