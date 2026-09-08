@@ -53,6 +53,13 @@
   padding: rem-calc(20px) rem-calc(24px);
   background-color: $white;
 
+  // Por debajo de md los módulos ocultan su contenido y lo llevan al modal de
+  // filtros, así que la caja se quedaría vacía: se retira el marco.
+  @include media-breakpoint-down(sm) {
+    border: 0;
+    padding: 0;
+  }
+
   > .card,
   .card {
     margin: 0;
