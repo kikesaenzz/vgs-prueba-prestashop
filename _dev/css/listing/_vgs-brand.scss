@@ -79,10 +79,10 @@
     padding: 0;
   }
 
-  // Titulares "Categorías" y "Filtros".
+  // Titulares "Categorías" y "Filtrar por". Se apunta solo a .card-title para
+  // no arrastrar los encabezados de cada faceta, que llevan también .h5 y en
+  // el diseño van en morado y más pequeños.
   .card-title,
-  .h5,
-  .search-filters__title,
   &__title {
     margin: 0 0 rem-calc(20px);
     color: $primary;
@@ -126,61 +126,67 @@
   }
 }
 
-// Bloque de filtros (módulo de facetas de PrestaShop).
-#search_filters,
+// Bloque de filtros del módulo de facetas.
 .search-filters {
-  border: 0;
-  padding: 0;
-  background-color: transparent;
-
-  .facet {
-    border: 0;
-    padding: 0;
-    margin-bottom: rem-calc(28px);
-
-    &__title,
-    .facet-title,
-    .h6 {
-      color: $vgs-purple;
-      font-size: rem-calc(16px);
-      font-weight: 600;
-      line-height: rem-calc(19.5px);
-      margin-bottom: rem-calc(20px);
-    }
+  &__block {
+    padding-left: 0;
+    padding-right: 0;
   }
 
-  .facet-label {
-    display: flex;
-    align-items: center;
-    gap: rem-calc(10px);
-    margin-bottom: rem-calc(12px);
+  // En el diseño los titulares de cada filtro van en morado.
+  &__title {
+    color: $vgs-purple;
+    font-size: rem-calc(16px);
+    font-weight: 600;
+    line-height: rem-calc(19.5px);
+  }
+
+  &__header {
+    margin-bottom: rem-calc(16px);
+  }
+
+  // Casillas: cuadrado redondeado gris que pasa a teal al marcarse.
+  .custom-control-label {
     color: $vgs-dark;
     font-size: rem-calc(15px);
     font-weight: 400;
 
-    a {
-      color: inherit;
+    &::before {
+      width: rem-calc(20px);
+      height: rem-calc(20px);
+      border: 0;
+      border-radius: rem-calc(4px);
+      background-color: $vgs-border-grey;
+    }
 
-      &:hover {
-        text-decoration: none;
-      }
+    &::after {
+      width: rem-calc(20px);
+      height: rem-calc(20px);
     }
   }
 
-  // Casillas: cuadrado redondeado teal cuando está activa.
-  .custom-checkbox input[type="checkbox"] + span,
-  .custom-control-label::before {
-    width: rem-calc(20px);
-    height: rem-calc(20px);
-    border: 0;
-    border-radius: rem-calc(4px);
-    background-color: $vgs-border-grey;
+  .custom-control-input:checked ~ .custom-control-label::before {
+    border-color: $primary;
+    background-color: $primary;
   }
 
-  .custom-checkbox input[type="checkbox"]:checked + span,
-  .custom-control-input:checked ~ .custom-control-label::before {
-    background-color: $primary;
-    border-color: $primary;
+  // Barra de precio.
+  .noUi-connect {
+    background-color: $vgs-dark-text;
+  }
+
+  .noUi-handle {
+    border: 0;
+    border-radius: 50%;
+    background-color: $vgs-dark-text;
+    box-shadow: none;
+  }
+
+  .noUi-target {
+    border: 0;
+    border-radius: rem-calc(20px);
+    background-color: $vgs-border-grey;
+    box-shadow: none;
   }
 }
 
