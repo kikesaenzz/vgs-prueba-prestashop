@@ -46,7 +46,7 @@
 
         {if $product.has_discount}
           {if $product.discount_type === 'percentage'}
-            <span class="discount">-{$product.discount_percentage_absolute}</span>
+            <span class="discount">-{$product.discount_percentage_absolute|regex_replace:'/[.,]\d+/':''}</span>
           {else}
             <span class="discount">-{$product.discount_to_display}</span>
           {/if}

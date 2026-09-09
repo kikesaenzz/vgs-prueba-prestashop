@@ -26,11 +26,27 @@
       object-fit: contain;
     }
 
-    &__list,
+    // El carrusel debe ocupar toda la caja: si se queda a su ancho natural
+    // (el de las tres diapositivas juntas), el centrado del contenedor deja a
+    // la vista la diapositiva del medio en lugar de la portada.
+    .swiper {
+      width: 100%;
+      height: 100%;
+    }
+
+    // Ojo: __list es el swiper-wrapper. Centrar aquí su contenido descoloca
+    // el carrusel, porque las tres diapositivas juntas son más anchas que la
+    // caja y se centra el conjunto. El centrado va en cada diapositiva.
     .swiper-slide {
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    .swiper-slide img {
+      max-height: 100%;
+      padding: rem-calc(24px);
+      object-fit: contain;
     }
   }
 
@@ -361,5 +377,11 @@
 // oculta desde el tema (basta con retirar esta regla para recuperarlo) en
 // lugar de desactivar el módulo, que es configuración de la tienda.
 #product .product-additional-info .social-sharing {
+  display: none;
+}
+
+// La disponibilidad ya aparece en la banda de marca/referencia del diseño, así
+// que la etiqueta suelta que PrestaShop pinta bajo el botón sobraría.
+#product #product-availability {
   display: none;
 }

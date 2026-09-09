@@ -117,6 +117,22 @@
   .blockcart .material-icons {
     color: $vgs-purple;
   }
+
+  // Iconos de cuenta y carrito: en el diseño van a línea, no rellenos, y con
+  // el teal y el morado de la marca. Se dibujan con la geometría del Figma.
+  &__svg-icon {
+    display: block;
+    width: rem-calc(24px);
+    height: rem-calc(24px);
+
+    &--account {
+      color: $primary;
+    }
+
+    &--cart {
+      color: #6b2bc7;
+    }
+  }
 }
 
 // Barra de menú principal.

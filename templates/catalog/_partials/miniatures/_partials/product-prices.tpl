@@ -12,7 +12,8 @@
         <span class="price price--regular" aria-label="{l s='Regular price' d='Shop.Theme.Catalog'}">{$product.regular_price}</span>
 
         {if $product.discount_type === 'percentage'}
-          <span class="product-miniature__discount">{$product.discount_percentage}</span>
+          {* El diseño escribe el porcentaje sin decimales. *}
+          <span class="product-miniature__discount">{$product.discount_percentage|regex_replace:'/[.,]\d+/':''}</span>
         {/if}
       {/if}
 

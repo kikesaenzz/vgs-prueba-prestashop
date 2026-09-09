@@ -146,9 +146,12 @@
             <div class="vgs-category-title">
                 <div class="container">
                     <div class="vgs-category-title__inner">
+                        {* En el diseño el icono de la banda es un pictograma distinto
+                           de la foto de portada. PrestaShop guarda ese segundo
+                           archivo como miniatura de menú de la categoría. *}
                         {if $category.image.medium.url}
                             <img class="vgs-category-title__icon"
-                                 src="{$category.image.medium.url}"
+                                 src="{$urls.img_cat_url}{$category.id}-0_thumb.jpg"
                                  alt=""
                                  width="58" height="58" loading="lazy">
                         {/if}

@@ -19,12 +19,14 @@
     }
   }
 
-  // Encabezados de columna.
+  // Encabezados de columna. Los módulos los pintan como .h4, no .h3.
   .h3,
   h3,
+  .h4,
+  h4,
   .block-title,
   .footer__title {
-    color: $vgs-breadcrumb-bg;
+    color: $white;
     font-size: rem-calc(19px);
     font-weight: 700;
     text-transform: uppercase;
@@ -43,7 +45,15 @@
   }
 }
 
-// Bloque de contacto (teléfono, correo y dirección) con iconos.
+// Bloque de contacto (teléfono, correo y dirección) con iconos. En el diseño
+// arranca más abajo que las columnas de enlaces, así que se centra en vertical
+// dentro de la fila en lugar de quedar pegado arriba.
+@include media-breakpoint-up(lg) {
+  .footer-container .row > .col-12.col-lg-4 {
+    align-self: center;
+  }
+}
+
 .vgs-footer-contact {
   display: flex;
   flex-direction: column;
