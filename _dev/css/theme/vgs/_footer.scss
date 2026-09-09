@@ -78,12 +78,18 @@
   }
 }
 
-// Filete blanco + copyright.
+// Filete blanco a ancho completo + copyright dentro del .container. Vive
+// fuera del .container del pie (ver footer.tpl), así que el borde no
+// necesita ningún truco de vw: es de ancho completo de forma natural.
 .vgs-footer-bottom {
   margin-top: rem-calc(48px);
   border-top: rem-calc(1px) solid $white;
-  padding: rem-calc(20px) 0;
-  text-align: right;
+
+  .container {
+    padding-top: rem-calc(20px);
+    padding-bottom: rem-calc(20px);
+    text-align: right;
+  }
 
   &__text {
     margin: 0;
@@ -93,7 +99,9 @@
   }
 
   @include media-breakpoint-down(sm) {
-    text-align: center;
+    .container {
+      text-align: center;
+    }
   }
 }
 

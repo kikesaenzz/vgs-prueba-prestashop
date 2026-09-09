@@ -22,13 +22,8 @@
  * @copyright Since 2007 PrestaShop SA and Contributors
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  *}
-<div class="container">
-  <div class="row">
-    {block name='hook_footer_before'}
-      {hook h='displayFooterBefore'}
-    {/block}
-  </div>
-</div>
+{* El bloque de suscripción a la newsletter (ps_emailsubscription, enganchado
+   en displayFooterBefore) no está en el diseño. *}
 <div class="footer-container">
   <div class="container">
     <div class="row">
@@ -71,10 +66,19 @@
       {/block}
     </div>
 
-    {block name='vgs_footer_bottom'}
-      <div class="vgs-footer-bottom">
+  </div>
+
+  {block name='vgs_footer_bottom'}
+    {* El filete debe llegar a los dos bordes del navegador: en vez del truco
+       de un pseudo-elemento a 100vw (que se descuadra si el elemento no está
+       perfectamente centrado, como pasaba aquí por el padding del
+       .container), el bloque vive fuera del .container, a ancho completo de
+       .footer-container, y envuelve su propio .container para alinear el
+       texto con el resto del pie. *}
+    <div class="vgs-footer-bottom">
+      <div class="container">
         <p class="vgs-footer-bottom__text">{l s='Todos los derechos reservados - Desarrollado por VGS' d='Shop.Theme.Global'}</p>
       </div>
-    {/block}
-  </div>
+    </div>
+  {/block}
 </div>

@@ -116,9 +116,14 @@
     {* Entre las migas y el título el diseño coloca una banda de imagen a
        ancho completo (206px de alto) con la portada de la categoría. *}
     {block name='vgs_category_banner'}
-        {if $page.page_name == 'category' && isset($category) && $category.image.large.url}
+        {* No hay un tipo de imagen "large" registrado para categorías en esta
+           instalación (solo small_default y category_default, pensados para
+           miniaturas), así que $category.image.large.url resolvía a una
+           imagen de 141x180 estirada a cientos de píxeles de ancho. Se sirve
+           un archivo aparte, generado a un tamaño real para la banda. *}
+        {if $page.page_name == 'category' && isset($category) && $category.image.medium.url}
             <div class="vgs-category-banner">
-                <img src="{$category.image.large.url}"
+                <img src="{$urls.img_cat_url}{$category.id}-banner.jpg"
                      alt="{$category.name}"
                      class="vgs-category-banner__img"
                      loading="lazy">
@@ -136,7 +141,7 @@
                            archivo como miniatura de menú de la categoría. *}
                         {if $category.image.medium.url}
                             <img class="vgs-category-title__icon"
-                                 src="{$urls.img_cat_url}{$category.id}-0_thumb.jpg"
+                                 src="{$urls.img_cat_url}{$category.id}-0_thumb.png"
                                  alt=""
                                  width="58" height="58" loading="lazy">
                         {/if}

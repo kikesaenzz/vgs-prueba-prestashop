@@ -91,8 +91,10 @@ modules/is_shoppingcart/views/templates/hook/is_shoppingcart.tpl
 modules/is_shoppingcart/views/templates/front/modal-success.tpl
 ```
 
-Los dos últimos son *overrides* de plantillas de módulo que el propio tema ya
-traía: viven dentro de la carpeta del tema, así que viajan con este repositorio.
+Los seis últimos son *overrides* de plantillas de módulo (Falcon ya traía el
+mecanismo: basta con reproducir la ruta del módulo dentro de `themes/falcon`
+para que gane a la plantilla original), así que viven dentro de la carpeta
+del tema y viajan con este repositorio.
 
 ## Decisiones técnicas
 
@@ -115,6 +117,8 @@ traía: viven dentro de la carpeta del tema, así que viajan con este repositori
 - **El icono de menú de la barra es decorativo.** En el diseño acompaña a "CATEGORÍAS"; en escritorio los dos enlaces ya están a la vista, así que se marca `aria-hidden` en lugar de dejar un control que no lleva a ninguna parte.
 - **La cabecera no lleva logotipo**, tal y como marca el diseño: se ha retirado el bloque del logo de Falcon en vez de ocultarlo por CSS, para no dejar HTML muerto. Sin ese bloque, el buscador y los iconos de cuenta/carrito se agrupan contra el borde derecho de la cabecera con `margin-left: auto`, dejando el hueco en blanco de la izquierda que tiene el Figma.
 - **El menú superior solo muestra "Categorías" y "Promociones"**, los dos textos literales del diseño, en vez del árbol de categorías que pinta `ps_mainmenu` por defecto. "Categorías" enlaza a la categoría real que trae el menú configurado (Cosmética) y "Promociones" al listado de ofertas nativo de PrestaShop (`controller=prices-drop`); ninguno de los dos enlaces está escrito a mano, así que si el día de mañana cambia el identificador de la categoría, el enlace se sigue generando solo. El mismo `<ul>` alimenta también el menú de móvil, que Falcon rellena clonando por JS el menú de escritorio.
+- **El bloque de suscripción a la newsletter no está en el diseño**, así que se ha retirado el hook (`displayFooterBefore`, del módulo `ps_emailsubscription`) directamente de `footer.tpl` en vez de desactivar el módulo, que es configuración de la tienda.
+- **En la banda de marca/referencia y en el primer párrafo de la descripción, el diseño mezcla dos pesos y colores en el mismo texto**: la etiqueta ("MARCA:") va en mayúsculas, negrita y teal, y el valor que la sigue en gris normal; el primer párrafo de la descripción va entero en negrita y el resto del cuerpo en peso normal. Se resuelve con CSS (`.vgs-product-meta__label` para lo primero, `.product-description > p:first-child` para lo segundo) en vez de negrita a mano en el HTML, para que siga funcionando si cambia el contenido.
 
 ## Dificultades encontradas
 
@@ -156,14 +160,32 @@ La tarjeta salía 40 px más alta de la cuenta por un `mb-2` en el título y el 
 **12. Centrar en el contenedor equivocado rompe el carrusel.**
 La galería de la ficha mostraba la segunda imagen en lugar de la portada. No era el carrusel: yo había puesto `justify-content: center` en `.product-main-images__list`, que resulta ser el `swiper-wrapper`. Sus tres diapositivas juntas son más anchas que la caja, así que el navegador centraba el conjunto y dejaba a la vista la del medio. Con una sola imagen —los productos de demostración— el fallo no se notaba. El centrado va en cada `.swiper-slide`.
 
+**13. Un archivo transparente convertido a JPG deja de serlo.**
+El pictograma de la banda de categoría salía con un cuadrado blanco detrás en vez de fondo transparente. El script que generaba la miniatura aplanaba el PNG sobre blanco antes de guardarlo como JPG (JPG no tiene canal alfa), heredado del mismo aplanado que sí hace falta para las fotos de producto. El pictograma se guarda como PNG, sin aplanar.
+
+**14. `$category.image.large.url` no es el tamaño real que sugiere el nombre.**
+La banda de imagen de la categoría se veía pixelada: la instalación no tiene registrado un tipo de imagen "large" para categorías (solo `small_default` a 98×98 y `category_default` a 141×180), así que ese campo caía en la miniatura de 141px estirada a 788px de ancho por CSS. Se genera un archivo aparte a un tamaño real (1330px) y se referencia directamente por nombre de archivo en vez de depender del tipo de imagen.
+
+**15. Borrar productos y categorías no reindexa los filtros.**
+Al vaciar el catálogo de ropa y crear el de cosmética, la columna de filtros se quedó vacía: la plantilla de filtros de `ps_facetedsearch` seguía apuntando a las categorías antiguas (Inicio, Men, Women…) y ninguna de las características nuevas (Tipo de piel, Función…) estaba marcada como filtrable en `layered_indexable_feature`. Hay que reescribir la plantilla de filtros (tabla `layered_filter`, un blob serializado de PHP) apuntando a las categorías y características vigentes, y volver a llamar a `buildLayeredCategories()`, `indexFeatures()` e `indexAttributeGroup()` del propio módulo. El admin lo hace con un botón; sin acceso al admin (o para que quede repetible en un script), hay que llamar a esos mismos métodos.
+
+**16. Una clase de más en el `<input>` rompía el selector de cantidad.**
+El botón "+" de la cantidad no aparecía pegado al de "−": los dos quedaban superpuestos en el mismo sitio. La plantilla ponía `class="input-group input-touchspin"` en el `<input>` original, pero el plugin TouchSpin envuelve ese `<input>` en un **nuevo** `<div class="input-group bootstrap-touchspin">` con los botones dentro. Mi CSS apuntaba a `.input-group`, así que se aplicaba tanto al `<input>` suelto (antes de que el JS lo envolviera) como al div nuevo, y las dos cajas de 128px superpuestas descolocaban los botones. Se quita la clase sobrante del `<input>` y el CSS pasa a apuntar a `.bootstrap-touchspin`, la clase que el plugin garantiza en el envoltorio real.
+
+**17. Un `::before` a `100vw` solo funciona si el elemento está perfectamente centrado.**
+El filete blanco del pie no llegaba a los bordes reales del navegador aunque el CSS calculaba `left: calc(-50vw + 50%)` (la variante de `100vw` que evita el desbordamiento por la barra de desplazamiento, que ya me había hecho falta para la banda del menú). Ese cálculo asume que el elemento que lo genera está centrado en el viewport, y `.vgs-footer-bottom` no lo estaba: vivía dentro de `.container` sin pasar por un `.row` de Bootstrap, así que no tenía los márgenes negativos que compensan el padding del `.container` y quedaba 10px descentrado. En la banda del menú sí funcionaba porque ese bloque es un `.col-12` real dentro de un `.row`, que sí trae esa compensación. La solución robusta no fue ajustar el cálculo, sino sacar el filete del `.container` por completo: vive suelto dentro de `.footer-container` (que sí ocupa el 100% real, sin padding) y envuelve su propio `.container` para el texto, sin ningún truco de `vw`.
+
+**18. El color de un texto puede no ser el que devuelve la API a la primera.**
+"Marca:", "Referencia:" y "Disponibilidad:" salían en gris cuando el diseño los marca en teal y en mayúsculas. La consulta rápida a la API (`fills[0].color`) sí traía gris — pero es el color del **primer carácter**, no de todo el texto: es un nodo de texto enriquecido, con un `characterStyleOverrides` que aplica teal y mayúsculas solo a la etiqueta ("MARCA:") y dejaba el valor (" Caudelie") en gris normal. Los nodos de texto con estilos mixtos hay que leerlos con `styleOverrideTable`, no solo con el color base. Lo mismo pasaba con el primer párrafo de "Información del producto", en negrita en el diseño mientras el resto del cuerpo va en peso normal.
+
 **Analogía que ayudó**: los `{hook}` de Smarty son conceptualmente como los `do_action`/`apply_filters` de WordPress, y sobrescribir un `.tpl` equivale a un *template override* de un child theme. Con esa asociación mental, moverse por las plantillas fue mucho más intuitivo.
 
 ## Comprobaciones realizadas
 
-- Navegación por categorías con los productos de demostración, filtros y paginación.
-- Ficha de producto: cambio de combinación (talla y color) actualizando imagen y precio, y **añadir al carrito** abriendo el modal con producto y subtotal correctos.
-- Responsive verificado a 375 px y en escritorio, sin desbordamiento horizontal.
-- `npm run build` sin errores y sin errores en la consola del navegador en ninguna de las dos páginas.
+- Navegación por categorías con los productos reales de cosmética, filtros de facetas (disponibilidad, precio, categorías, características) y paginación: se ha comprobado que marcar un filtro cambia el listado sin recargar y que entrar en cada subcategoría muestra solo sus productos.
+- Ficha de producto: la cantidad se puede subir y bajar con los botones "−"/"+", cambio de combinación actualizando imagen y precio, y **añadir al carrito** abriendo el modal con producto y subtotal correctos.
+- Responsive verificado a 375 px y en escritorio, sin desbordamiento horizontal en categoría, ficha, portada ni pie.
+- `npm run build` sin errores y sin errores en la consola del navegador en categoría, ficha y portada.
 - Medidas contrastadas contra los nodos de Figma: contenedor 1330, columna de filtros 313, tarjeta 312×416 con franja de 104, galería 534×533, bandas de cabecera de 29/38/41 px y paginación de 40×40.
 - Sin `!important` en el SCSS propio.
 
@@ -177,6 +199,8 @@ Figma, que **no** forma parte del tema:
 - **Los productos del diseño** con sus nombres, precios, características y estados (uno fuera de stock, dos marcados como novedad). Las imágenes se han exportado del propio Figma y se guardan aplanadas sobre blanco, que es el fondo que usa el diseño.
 - **Las columnas del pie** (INFORMACIÓN, LEGAL) son bloques de `ps_linklist`, y "Mi cuenta" los pinta `ps_customeraccountlinks`. Se configuran en **Módulos → Enlaces del pie de página**.
 - **El catálogo de ropa de las demostración se ha borrado**, no solo ocultado: los productos y las categorías Clothes, Accesorios y Art (con sus subcategorías) no existen en esta base de datos. El diseño solo cubre cosmética, y dejar el resto del catálogo visible en el buscador, en "Promociones" o en el propio menú habría contradicho el punto 3 de "solo debe aparecer lo que hay en el Figma". El script que lo hace, `vgs-limpiar-catalogo.php`, vive junto a los demás en `datos-tienda/` y no es reversible por sí solo: antes de ejecutarlo se vuelca la base de datos completa a `datos-tienda/backups/`.
+- **Los filtros de la columna izquierda se reindexan aparte** (`vgs-reindexar-filtros.php`), porque borrar y crear catálogo no actualiza por sí solo la plantilla de facetas de `ps_facetedsearch` ni qué características son filtrables. Sin este paso la columna de "Filtros" queda vacía.
+- **El pictograma de la banda de categoría** (transparente) y **la banda de imagen a ancho completo** (a un tamaño real, no la miniatura de 141px que registra PrestaShop) los genera `vgs-icono-transparente.php` y `vgs-banner-categoria.php`, aparte del resto de imágenes de `vgs-imagenes-categoria.php`.
 
 Sobre una instalación limpia con los datos de demostración de PrestaShop, el
 tema se ve igual en las páginas de categoría y ficha; el catálogo de ropa que

@@ -176,9 +176,10 @@
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 50%;
-    width: 100vw;
-    transform: translateX(-50%);
+    // left/right con calc(-50vw + 50%) evita el desbordamiento horizontal
+    // que da width: 100vw cuando el 100vw incluye la barra de desplazamiento.
+    left: calc(-50vw + 50%);
+    right: calc(-50vw + 50%);
     background-color: $primary;
   }
 

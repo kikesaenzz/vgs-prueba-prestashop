@@ -44,7 +44,7 @@
               value="1"
               min="1"
             {/if}
-            class="input-group input-touchspin"
+            class="input-touchspin"
             aria-label="{l s='Quantity' d='Shop.Theme.Actions'}"
           >
         </div>

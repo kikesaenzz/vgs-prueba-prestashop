@@ -95,7 +95,7 @@
     padding: rem-calc(14px) rem-calc(20px);
     color: $vgs-dark-text;
     font-size: rem-calc(15px);
-    font-weight: 600;
+    font-weight: 500;
     line-height: rem-calc(19.5px);
 
     + .vgs-product-meta__item {
@@ -112,8 +112,12 @@
     }
   }
 
+  // En el diseño solo la etiqueta ("MARCA:", "REFERENCIA:"...) va en
+  // mayúsculas, negrita y teal; el valor que la sigue se queda en gris.
   &__label {
-    color: $vgs-dark-text;
+    color: $primary;
+    font-weight: 600;
+    text-transform: uppercase;
   }
 }
 
@@ -176,8 +180,15 @@
   .qty {
     flex: 0 0 auto;
 
-    .input-group,
+    // El plugin TouchSpin envuelve el <input> original en un nuevo
+    // div.input-group (además del .bootstrap-touchspin que añade). Apuntar a
+    // .input-group aquí también estilaba el <input> suelto antes de que el JS
+    // lo envolviera, y las dos cajas de 128px superpuestas descolocaban los
+    // botones -/+ (quedaban el uno encima del otro). Solo el envoltorio real.
+    .bootstrap-touchspin,
     .js-quantity-wrapper {
+      display: flex;
+      align-items: stretch;
       width: rem-calc(128px);
       height: rem-calc(46px);
       border: rem-calc(1px) solid $vgs-border-teal;
@@ -185,23 +196,47 @@
       overflow: hidden;
     }
 
+    .input-group-btn {
+      display: flex;
+      flex: 0 0 auto;
+    }
+
     input.form-control {
+      flex: 1 1 auto;
+      width: 0;
+      min-width: 0;
       height: 100%;
+      padding: 0;
       border: 0;
       color: $vgs-dark-text;
       font-size: rem-calc(16px);
       font-weight: 500;
       text-align: center;
+      -moz-appearance: textfield;
 
       &:focus {
         box-shadow: none;
       }
+
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        margin: 0;
+        -webkit-appearance: none;
+      }
     }
 
     .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: rem-calc(28px);
+      flex: 0 0 auto;
+      padding: 0;
       border: 0;
       background-color: $white;
       color: $vgs-dark-text;
+      font-size: rem-calc(16px);
+      line-height: 1;
 
       &:hover {
         background-color: rgba($vgs-light-blue, 0.35);
@@ -351,6 +386,12 @@
     font-size: rem-calc(16px);
     font-weight: 400;
     line-height: rem-calc(32px);
+
+    // El primer párrafo (la introducción, antes del primer apartado) va en
+    // negrita en el diseño; el resto del cuerpo se queda en peso normal.
+    > p:first-child {
+      font-weight: 600;
+    }
 
     h2,
     h3,
