@@ -198,7 +198,11 @@
       {/if}
     {/block}
 
-    {include file="catalog/_partials/product-tabs.tpl"}
+    {* La pestaña "Detalles del producto" que traía Falcon por defecto no
+       está en el diseño y repetía datos que ya se muestran más arriba
+       (marca/referencia en la banda de meta, características en su
+       tabla): se retira la inclusión entera en vez de vaciar el bloque,
+       ya que no queda nada del tab que sí forme parte del diseño. *}
 
     {block name='product_footer'}
       {hook h='displayFooterProduct' product=$product category=$category}

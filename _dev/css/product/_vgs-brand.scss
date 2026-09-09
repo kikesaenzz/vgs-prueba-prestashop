@@ -396,20 +396,10 @@
     h2,
     h3,
     h4 {
-      display: flex;
-      align-items: baseline;
-      gap: rem-calc(10px);
       margin-top: rem-calc(32px);
       color: $vgs-purple;
       font-size: rem-calc(16px);
       font-weight: 700;
-
-      &::before {
-        flex: 0 0 auto;
-        color: $vgs-purple;
-        content: "✓";
-        font-size: rem-calc(16px);
-      }
     }
   }
 }
