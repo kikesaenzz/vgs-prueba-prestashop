@@ -2,7 +2,7 @@
   <div class="card">
    <div class="card-header">
       <h5 class="card-title mb-0">
-        {l s='Registration' d='Shop.Istheme'}
+        {l s='Registro' d='Shop.Istheme'}
       </h5>
     </div>
 

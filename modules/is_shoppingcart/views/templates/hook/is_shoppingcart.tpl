@@ -44,7 +44,7 @@
         </div>
         <div class="cart-dropdown__title d-flex align-items-center mb-3">
           <p class="h5 mb-0 mr-2">
-            {l s='Your cart' d='Modules.Isshoppingcart.Isshoppingcart'}
+            {l s='Su carrito' d='Modules.Isshoppingcart.Isshoppingcart'}
           </p>
           <a data-toggle="dropdown" href="#" class="cart-dropdown__close dropdown-close ml-auto cursor-pointer text-decoration-none">
             <i class="material-icons d-block">close</i>
@@ -64,13 +64,13 @@
 
           <div class="mt-3">
             <a href="{$cart_url}" class="btn btn-sm btn-primary btn-block dropdown-close">
-              {l s='Proceed to checkout' d='Shop.Theme.Actions'}
+              {l s='Finalizar compra' d='Shop.Theme.Actions'}
             </a>
           </div>
 
         {else}
           <div class="alert alert-warning">
-            {l s='Unfortunately your basket is empty' d='Modules.Isshoppingcart.Isshoppingcart'}
+            {l s='Su carrito está vacío' d='Modules.Isshoppingcart.Isshoppingcart'}
           </div>
         {/if}
       </div>
