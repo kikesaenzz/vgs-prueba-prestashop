@@ -25,7 +25,7 @@
 {block name='product_flags'}
     <ul class="product-flags d-flex flex-column position-absolute w-100 pe-none">
         {foreach from=$product.flags item=flag}
-            <li class="product-flags__flag rounded product-flags__flag--{$flag.type}">{$flag.label}</li>
+            <li class="product-flags__flag product-flags__flag--{$flag.type}">{$flag.label}</li>
         {/foreach}
     </ul>
 {/block}

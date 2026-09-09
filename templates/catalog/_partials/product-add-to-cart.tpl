@@ -26,8 +26,11 @@
   {if !$configuration.is_catalog}
 
     {block name='product_quantity'}
-      <div class="product-quantity row mb-1 mx-n1 mt-n2 align-items-center">
-        <div class="qty col-12 col-sm-auto mx-auto mt-2 px-1">
+      <div class="product-quantity mb-1 align-items-center">
+        {* El diseño rotula el selector de cantidad. *}
+        <label class="product-quantity__label" for="quantity_wanted">{l s='Quantity' d='Shop.Theme.Actions'}</label>
+
+        <div class="qty">
           <input
             type="number"
             name="qty"
@@ -46,9 +49,9 @@
           >
         </div>
 
-        <div class="add col mt-2 px-1">
+        <div class="add">
           <button
-            class="btn btn-primary add-to-cart btn-block"
+            class="btn btn-primary add-to-cart"
             data-button-action="add-to-cart"
             type="submit"
             {if !$product.add_to_cart_url}

@@ -13,7 +13,7 @@
     align-items: center;
     justify-content: center;
     aspect-ratio: 534 / 533;
-    border: rem-calc(1px) solid $primary;
+    border: rem-calc(1px) solid $vgs-border-teal;
     border-radius: rem-calc(8px);
     background-color: $white;
     overflow: hidden;
@@ -40,7 +40,7 @@
     &__elem img {
       width: rem-calc(88px);
       height: rem-calc(88px);
-      border: rem-calc(1px) solid $primary;
+      border: rem-calc(1px) solid rgba($primary, 0.7);
       border-radius: rem-calc(6px);
       background-color: $white;
       object-fit: contain;
@@ -70,6 +70,7 @@
 .vgs-product-meta {
   display: flex;
   flex-wrap: wrap;
+  min-height: rem-calc(54px);
   margin: rem-calc(24px) 0;
   background-color: rgba($vgs-light-blue, 0.2);
 
@@ -145,15 +146,25 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: rem-calc(20px);
+    gap: rem-calc(12px);
+  }
+
+  // El diseño rotula el selector de cantidad.
+  .product-quantity__label {
+    margin: 0 rem-calc(8px) 0 0;
+    color: $vgs-dark-text;
+    font-size: rem-calc(16px);
+    font-weight: 500;
   }
 
   .qty {
+    flex: 0 0 auto;
+
     .input-group,
     .js-quantity-wrapper {
       width: rem-calc(128px);
       height: rem-calc(46px);
-      border: rem-calc(1px) solid $primary;
+      border: rem-calc(1px) solid $vgs-border-teal;
       border-radius: rem-calc(4px);
       overflow: hidden;
     }
@@ -182,8 +193,13 @@
     }
   }
 
+  .add {
+    flex: 0 0 auto;
+  }
+
   .add-to-cart {
     display: inline-flex;
+    width: rem-calc(265px);
     align-items: center;
     justify-content: center;
     min-width: rem-calc(265px);
@@ -208,6 +224,7 @@
     }
 
     @include media-breakpoint-down(sm) {
+      width: 100%;
       min-width: 100%;
     }
   }
@@ -219,6 +236,7 @@
   align-items: center;
   gap: rem-calc(10px);
   margin: rem-calc(24px) 0;
+  min-height: rem-calc(54px);
   padding: rem-calc(14px) rem-calc(20px);
   background-color: rgba($vgs-light-purple, 0.3);
   color: $vgs-purple;
@@ -235,7 +253,7 @@
 
 // Tabla de características: dos pares etiqueta/valor por fila.
 .vgs-product-features {
-  border: rem-calc(1px) solid $primary;
+  border: rem-calc(1px) solid $vgs-border-teal;
 
   &__row {
     display: flex;
@@ -334,27 +352,9 @@
   }
 }
 
-// Etiquetas sobre la imagen de la ficha. En el diseño el descuento se comunica
-// con la píldora junto al precio, así que la etiqueta se omite para no
-// repetir el dato; las demás adoptan los colores de la marca.
-.product-flags {
-  .product-flag {
-    border-radius: rem-calc(8px);
-    background-color: $primary;
-    color: $white;
-    font-size: rem-calc(12px);
-    font-weight: 500;
-
-    &.discount,
-    &.discount-percentage,
-    &.discount-amount,
-    &.on-sale {
-      display: none;
-    }
-
-    &.out-of-stock {
-      background-color: $vgs-stock-yellow;
-      color: $vgs-dark-text;
-    }
-  }
+// El módulo de compartir en redes no aparece en el diseño de la ficha. Se
+// oculta desde el tema (basta con retirar esta regla para recuperarlo) en
+// lugar de desactivar el módulo, que es configuración de la tienda.
+#product .product-additional-info .social-sharing {
+  display: none;
 }

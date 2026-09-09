@@ -48,7 +48,7 @@
 // Los módulos de PrestaShop pintan sus propias .card dentro, así que se les
 // quita el marco para que no se dupliquen bordes.
 .vgs-sidebar {
-  border: rem-calc(1px) solid $primary;
+  border: rem-calc(1px) solid $vgs-border-teal;
   border-radius: rem-calc(8px);
   padding: rem-calc(20px) rem-calc(24px);
   background-color: $white;
@@ -84,7 +84,9 @@
   // el diseño van en morado y más pequeños.
   .card-title,
   &__title {
-    margin: 0 0 rem-calc(20px);
+    margin: 0 0 rem-calc(28px);
+    padding-bottom: rem-calc(29px);
+    border-bottom: rem-calc(1px) solid $primary;
     color: $primary;
     font-size: rem-calc(20px);
     font-weight: 700;
@@ -131,6 +133,13 @@
   &__block {
     padding-left: 0;
     padding-right: 0;
+
+    // El diseño separa cada faceta con un filete teal.
+    + .search-filters__block {
+      margin-top: rem-calc(28px);
+      padding-top: rem-calc(28px);
+      border-top: rem-calc(1px) solid $primary;
+    }
   }
 
   // En el diseño los titulares de cada filtro van en morado.
@@ -211,7 +220,7 @@
     gap: rem-calc(10px);
     min-height: rem-calc(40px);
     padding: 0 rem-calc(16px);
-    border: rem-calc(1px) solid $primary;
+    border: rem-calc(1px) solid $vgs-border-teal;
     border-radius: rem-calc(20px);
     background-color: $white;
     color: $primary;
@@ -268,7 +277,7 @@
   flex-direction: column;
   width: 100%;
   height: 100%;
-  border: rem-calc(1px) solid $primary;
+  border: rem-calc(1px) solid $vgs-border-teal;
   border-radius: rem-calc(8px);
   background-color: $white;
   overflow: hidden;
@@ -307,8 +316,8 @@
   .product-description {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: rem-calc(10px);
+    justify-content: flex-start;
+    gap: rem-calc(6px);
     min-height: rem-calc(104px);
     margin-top: auto;
     padding: rem-calc(15px) rem-calc(20px);
@@ -352,6 +361,7 @@
     line-height: rem-calc(19.8px);
   }
 
+  .price--regular,
   .regular-price,
   .product-price--old {
     color: $vgs-dark-text;
@@ -360,6 +370,7 @@
     text-decoration: line-through;
   }
 
+  &__discount,
   .discount-percentage,
   .product-discount-percentage {
     display: inline-flex;
@@ -376,23 +387,23 @@
   }
 }
 
-// Etiquetas de estado sobre la tarjeta.
-.product-flags {
-  position: absolute;
-  top: rem-calc(10px);
+// Etiquetas de estado sobre la imagen, a 10/11 px de la esquina como en el
+// diseño. Falcon las pinta con la clase `product-flags__flag`.
+.product-miniature .product-flags {
+  top: rem-calc(11px);
   left: rem-calc(10px);
   z-index: 2;
-  display: flex;
-  flex-direction: column;
   gap: rem-calc(6px);
+  width: auto;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.product-flag {
+.product-flags__flag {
   display: inline-flex;
   align-items: center;
+  align-self: flex-start;
   min-height: rem-calc(25px);
   padding: 0 rem-calc(10px);
   border-radius: rem-calc(8px);
@@ -401,11 +412,18 @@
   font-size: rem-calc(12px);
   font-weight: 500;
   line-height: rem-calc(13.2px);
+  text-transform: uppercase;
 
-  &.out-of-stock,
-  &.flag-out-of-stock {
+  &--out_of_stock,
+  &--on-backorder {
     background-color: $vgs-stock-yellow;
     color: $vgs-dark-text;
+  }
+
+  // En el diseño el descuento no se marca sobre la imagen, sino en una
+  // píldora junto al precio.
+  &--discount {
+    display: none;
   }
 }
 
@@ -484,7 +502,7 @@
   .next .page-link {
     gap: rem-calc(8px);
     padding: 0 rem-calc(16px);
-    border: rem-calc(1px) solid $primary;
+    border: rem-calc(1px) solid $vgs-border-teal;
     background-color: $white;
     color: $primary;
 
@@ -541,7 +559,7 @@
     gap: rem-calc(8px);
     min-height: rem-calc(40px);
     padding: 0 rem-calc(16px);
-    border: rem-calc(1px) solid $primary;
+    border: rem-calc(1px) solid $vgs-border-teal;
     border-radius: rem-calc(20px);
     background-color: $white;
     color: $primary;

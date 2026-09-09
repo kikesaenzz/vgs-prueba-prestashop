@@ -51,8 +51,9 @@
       <div class="col-md-5 mb-4">
         {block name='page_content_container'}
             {block name='page_content'}
+              {* En el diseño la ficha no lleva etiquetas sobre la imagen: el
+                 descuento se muestra en la píldora junto al precio. *}
               <div class="position-relative">
-                {include file='catalog/_partials/product-flags.tpl'}
 
                 {block name='product_cover_thumbnails'}
                   {include file='catalog/_partials/product-cover-thumbnails.tpl'}

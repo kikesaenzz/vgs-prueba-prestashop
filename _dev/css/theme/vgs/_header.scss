@@ -172,6 +172,14 @@
     align-items: center;
     color: $primary;
 
+    // El icono de inicio es un SVG en línea sin atributos de tamaño: sin
+    // estas medidas el navegador lo colapsa a 0x0.
+    &--home svg {
+      display: block;
+      width: rem-calc(20px);
+      height: rem-calc(18px);
+    }
+
     a,
     span {
       color: $primary;

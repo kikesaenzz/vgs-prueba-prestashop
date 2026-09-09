@@ -43,3 +43,6 @@ $vgs-dark:          #222222;
 $vgs-breadcrumb-bg: #C2E3EA;
 $vgs-stock-yellow:  #FFC304;
 $vgs-border-grey:   #E8E8E7;
+// En el diseño los marcos (caja de filtros, tarjetas, botones) usan el teal
+// al 30 %, no el color plano.
+$vgs-border-teal:   rgba(#328189, 0.3);
