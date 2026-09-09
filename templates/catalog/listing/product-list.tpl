@@ -54,11 +54,9 @@
           {/block}
         </div>
 
-        {block name='product_list_active_filters'}
-          <div id="" class="hidden-sm-down">
-            {$listing.rendered_active_filters nofilter}
-          </div>
-        {/block}
+        {* El filtro activo se pinta dentro de products-top.tpl, en el hueco
+           donde el diseño no lleva selector de ordenación, para no
+           repetirlo dos veces en la página. *}
 
         <div>
           {block name='product_list'}

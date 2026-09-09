@@ -538,26 +538,45 @@
   }
 }
 
-// Filtros activos que pinta el módulo de facetas: se les da el aspecto de
-// píldora con borde teal del diseño.
-.active-filters,
+// Filtros activos que pinta el módulo de facetas: en el diseño es una sola
+// fila, "Filtros activos" seguido de las píldoras, sin ninguna caja
+// alrededor. El HTML real de ps_facetedsearch envuelve todo en un
+// .card/.card-header/.card-body de Bootstrap (pensado para ir en su propia
+// caja aparte); en vez de esas clases genéricas hay que anular
+// explícitamente el marco de la tarjeta y poner header+body en línea.
 #js-active-search-filters {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: rem-calc(16px);
   margin-bottom: rem-calc(28px);
-  padding: 0;
-  border: 0;
-  background-color: transparent;
 
-  .active-filters__title,
-  .h6,
-  p {
+  .card {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: rem-calc(16px);
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+    box-shadow: none;
+  }
+
+  .card-header {
+    flex: 0 0 auto;
+    padding: 0;
+    border: 0;
+    background-color: transparent;
+  }
+
+  .card-title {
     margin: 0;
     color: $vgs-dark-text;
     font-size: rem-calc(16px);
     font-weight: 600;
+  }
+
+  .card-body {
+    flex: 1 1 auto;
+    padding: 0;
   }
 
   ul {
@@ -568,9 +587,19 @@
     margin: 0;
     padding: 0;
     list-style: none;
+
+    // Bootstrap .row trae gutters negativos, y cada <li> es .col con su
+    // propio padding: ambos sobran aquí, ya que el espaciado lo pone el
+    // gap de arriba.
+    &.row {
+      margin: 0;
+    }
+
+    li {
+      padding: 0;
+    }
   }
 
-  .filter-block,
   li a {
     display: inline-flex;
     align-items: center;

@@ -23,9 +23,17 @@
  * @license   https://opensource.org/licenses/AFL-3.0 Academic Free License 3.0 (AFL-3.0)
  *}
 <div id="js-product-list-top" class="row products-selection align-items-center mb-4 mt-n2">
-  <div class="col-auto mt-2">
+  {* El diseño no incluye el selector de ordenación ("Relevancia" y demás
+     opciones que trae Falcon por defecto): en su lugar, en ese mismo hueco,
+     se muestra el filtro que esté activo (mismo bloque que product-list.tpl
+     pintaba aparte, más abajo; se ha quitado de allí para no repetirlo).
+     A diferencia del selector de ordenación original, este aviso también se
+     muestra en móvil: sin él, tras filtrar desde el modal "Filtrar" no
+     habría ninguna pista visual de qué filtro está aplicado ni forma de
+     quitarlo sin volver a abrir el modal. *}
+  <div class="col-12 col-md-auto mt-2 order-first order-md-0">
     {block name='sort_by'}
-      {include file='catalog/_partials/sort-orders.tpl' sort_orders=$listing.sort_orders}
+      {$listing.rendered_active_filters nofilter}
     {/block}
   </div>
 
