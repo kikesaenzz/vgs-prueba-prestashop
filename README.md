@@ -112,7 +112,9 @@ traía: viven dentro de la carpeta del tema, así que viajan con este repositori
 - **Los textos que salían en inglés se corrigen sobrescribiendo la plantilla del módulo, no traduciendo en el back office.** El buscador, el modal del carrito y el título "Mi cuenta" del pie pertenecen a módulos sin catálogo en español. Cambiar la cadena de origen en el override deja el arreglo dentro del repositorio; una traducción del back office se quedaría en la base de datos.
 - **Los titulares del pie van en blanco.** El Figma los marca en `#c2e3ea`, pero sobre el teal del pie se leen con poco contraste, así que se ha preferido el blanco.
 - **El porcentaje de descuento se escribe sin decimales**, como en el diseño: PrestaShop lo calcula a partir de los dos precios y devuelve, por ejemplo, `-11,13%`.
-- **El icono de menú de la barra es decorativo.** En el diseño acompaña a "CATEGORÍAS"; en escritorio Falcon ya muestra el menú desplegado a su lado, así que se marca `aria-hidden` en lugar de dejar un control que no lleva a ninguna parte.
+- **El icono de menú de la barra es decorativo.** En el diseño acompaña a "CATEGORÍAS"; en escritorio los dos enlaces ya están a la vista, así que se marca `aria-hidden` en lugar de dejar un control que no lleva a ninguna parte.
+- **La cabecera no lleva logotipo**, tal y como marca el diseño: se ha retirado el bloque del logo de Falcon en vez de ocultarlo por CSS, para no dejar HTML muerto. Sin ese bloque, el buscador y los iconos de cuenta/carrito se agrupan contra el borde derecho de la cabecera con `margin-left: auto`, dejando el hueco en blanco de la izquierda que tiene el Figma.
+- **El menú superior solo muestra "Categorías" y "Promociones"**, los dos textos literales del diseño, en vez del árbol de categorías que pinta `ps_mainmenu` por defecto. "Categorías" enlaza a la categoría real que trae el menú configurado (Cosmética) y "Promociones" al listado de ofertas nativo de PrestaShop (`controller=prices-drop`); ninguno de los dos enlaces está escrito a mano, así que si el día de mañana cambia el identificador de la categoría, el enlace se sigue generando solo. El mismo `<ul>` alimenta también el menú de móvil, que Falcon rellena clonando por JS el menú de escritorio.
 
 ## Dificultades encontradas
 
@@ -174,9 +176,13 @@ Figma, que **no** forma parte del tema:
 - **Categoría "Cosmética"** con las subcategorías del diseño (Capilar, Corporal, Facial, Ojos, Labios, Manos, Fragancias), su foto de portada —que alimenta la banda a ancho completo— y el pictograma de la banda del título.
 - **Los productos del diseño** con sus nombres, precios, características y estados (uno fuera de stock, dos marcados como novedad). Las imágenes se han exportado del propio Figma y se guardan aplanadas sobre blanco, que es el fondo que usa el diseño.
 - **Las columnas del pie** (INFORMACIÓN, LEGAL) son bloques de `ps_linklist`, y "Mi cuenta" los pinta `ps_customeraccountlinks`. Se configuran en **Módulos → Enlaces del pie de página**.
+- **El catálogo de ropa de las demostración se ha borrado**, no solo ocultado: los productos y las categorías Clothes, Accesorios y Art (con sus subcategorías) no existen en esta base de datos. El diseño solo cubre cosmética, y dejar el resto del catálogo visible en el buscador, en "Promociones" o en el propio menú habría contradicho el punto 3 de "solo debe aparecer lo que hay en el Figma". El script que lo hace, `vgs-limpiar-catalogo.php`, vive junto a los demás en `datos-tienda/` y no es reversible por sí solo: antes de ejecutarlo se vuelca la base de datos completa a `datos-tienda/backups/`.
 
 Sobre una instalación limpia con los datos de demostración de PrestaShop, el
-tema funciona igual pero se ve con el catálogo de ropa que trae de serie.
+tema se ve igual en las páginas de categoría y ficha; el catálogo de ropa que
+trae de serie seguirá ahí hasta que se ejecute `vgs-limpiar-catalogo.php`, y
+el menú superior solo enlazará correctamente si antes existe la categoría
+Cosmética (la crea `vgs-catalogo.php`).
 
 ### Un desajuste del propio diseño
 

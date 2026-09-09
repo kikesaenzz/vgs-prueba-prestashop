@@ -45,6 +45,24 @@
     padding-top: map.get($spacers, 3);
     padding-bottom: map.get($spacers, 3);
   }
+
+  // Sin logotipo, el diseño agrupa el buscador y los iconos contra el borde
+  // derecho de la cabecera en vez de repartirlos por toda la fila.
+  &__row {
+    @include media-breakpoint-up(md) {
+      justify-content: flex-end;
+    }
+  }
+
+  &__block--search {
+    @include media-breakpoint-up(md) {
+      flex: 0 0 rem-calc(563px);
+      width: rem-calc(563px);
+      max-width: rem-calc(563px);
+      margin-left: auto;
+      margin-right: rem-calc(48px);
+    }
+  }
 }
 
 // Buscador: caja con borde teal y botón sólido a la derecha.
