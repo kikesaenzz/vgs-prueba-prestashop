@@ -84,6 +84,11 @@ templates/catalog/_partials/product-flags.tpl      etiquetas de estado
 templates/catalog/_partials/product-add-to-cart.tpl fila de compra del diseño
 modules/ps_mainmenu/ps_mainmenu.tpl                icono de menú de la barra
 modules/ps_facetedsearch/views/templates/front/catalog/facets.tpl
+modules/ps_customersignin/ps_customersignin.tpl    icono de cuenta a línea
+modules/ps_customeraccountlinks/ps_customeraccountlinks.tpl
+modules/is_searchbar/views/templates/hook/is_searchbar.tpl
+modules/is_shoppingcart/views/templates/hook/is_shoppingcart.tpl
+modules/is_shoppingcart/views/templates/front/modal-success.tpl
 ```
 
 Los dos últimos son *overrides* de plantillas de módulo que el propio tema ya
@@ -103,6 +108,10 @@ traía: viven dentro de la carpeta del tema, así que viajan con este repositori
 - **Entre las migas y el título hay una banda de imagen a ancho completo** (206 px) con la portada de la categoría. Solo se pinta si la categoría tiene imagen.
 - **En la ficha no hay etiquetas sobre la imagen**: el descuento se comunica con la píldora junto al precio, así que repetirlo encima de la foto sobraba.
 - **Dos bloques de módulo se ocultan desde el tema** porque el diseño no los recoge y duplicaban información: el "Información de la tienda" de `ps_contactinfo` (repetía la columna de contacto del pie) y el de compartir en redes de la ficha. Se ocultan con una regla, no desactivando el módulo, que es configuración de la tienda: basta con retirarla para recuperarlos.
+- **Los iconos de cuenta y carrito se dibujan con la geometría del Figma.** El diseño los pinta a línea, y Material Icons —que es lo que trae Falcon— solo tiene la versión rellena. Se exportan del Figma y se insertan como SVG en línea, heredando el color con `currentColor`.
+- **Los textos que salían en inglés se corrigen sobrescribiendo la plantilla del módulo, no traduciendo en el back office.** El buscador, el modal del carrito y el título "Mi cuenta" del pie pertenecen a módulos sin catálogo en español. Cambiar la cadena de origen en el override deja el arreglo dentro del repositorio; una traducción del back office se quedaría en la base de datos.
+- **Los titulares del pie van en blanco.** El Figma los marca en `#c2e3ea`, pero sobre el teal del pie se leen con poco contraste, así que se ha preferido el blanco.
+- **El porcentaje de descuento se escribe sin decimales**, como en el diseño: PrestaShop lo calcula a partir de los dos precios y devuelve, por ejemplo, `-11,13%`.
 - **El icono de menú de la barra es decorativo.** En el diseño acompaña a "CATEGORÍAS"; en escritorio Falcon ya muestra el menú desplegado a su lado, así que se marca `aria-hidden` en lugar de dejar un control que no lleva a ninguna parte.
 
 ## Dificultades encontradas
@@ -142,6 +151,9 @@ Mis estilos del menú apuntaban a `.main-menu__list`, que en Falcon solo existe 
 **11. Las utilidades de Bootstrap llevan `!important`.**
 La tarjeta salía 40 px más alta de la cuenta por un `mb-2` en el título y el margen que Falcon da al bloque de precios. Como las utilidades de espaciado de Bootstrap son `!important`, no hay especificidad que valga: hay que quitar la clase de la plantilla. Igual con `.rounded`, que pisaba el radio de 8 px de las etiquetas.
 
+**12. Centrar en el contenedor equivocado rompe el carrusel.**
+La galería de la ficha mostraba la segunda imagen en lugar de la portada. No era el carrusel: yo había puesto `justify-content: center` en `.product-main-images__list`, que resulta ser el `swiper-wrapper`. Sus tres diapositivas juntas son más anchas que la caja, así que el navegador centraba el conjunto y dejaba a la vista la del medio. Con una sola imagen —los productos de demostración— el fallo no se notaba. El centrado va en cada `.swiper-slide`.
+
 **Analogía que ayudó**: los `{hook}` de Smarty son conceptualmente como los `do_action`/`apply_filters` de WordPress, y sobrescribir un `.tpl` equivale a un *template override* de un child theme. Con esa asociación mental, moverse por las plantillas fue mucho más intuitivo.
 
 ## Comprobaciones realizadas
@@ -153,9 +165,22 @@ La tarjeta salía 40 px más alta de la cuenta por un `mb-2` en el título y el 
 - Medidas contrastadas contra los nodos de Figma: contenedor 1330, columna de filtros 313, tarjeta 312×416 con franja de 104, galería 534×533, bandas de cabecera de 29/38/41 px y paginación de 40×40.
 - Sin `!important` en el SCSS propio.
 
-## Lo que depende del back office, no del tema
+## Lo que depende de los datos de la tienda, no del tema
 
-Dos cosas del diseño no viajan en este repositorio porque son datos de la tienda:
+El tema es lo único que viaja en este repositorio. Para que las capturas y el
+vídeo se parezcan al diseño, la tienda local se ha poblado con el catálogo del
+Figma, que **no** forma parte del tema:
 
-- **Los títulos y enlaces de las columnas del pie** (MI CUENTA, INFORMACIÓN, LEGAL) los configura `ps_linklist` en **Módulos → Enlaces del pie de página**. Con los datos de demostración salen "Products" y "Our company".
-- **Las miniaturas de la galería** solo aparecen cuando el producto tiene más de una imagen; los productos de demostración traen una sola. Los estilos (88×88 con borde teal) están puestos.
+- **Categoría "Cosmética"** con las subcategorías del diseño (Capilar, Corporal, Facial, Ojos, Labios, Manos, Fragancias), su foto de portada —que alimenta la banda a ancho completo— y el pictograma de la banda del título.
+- **Los productos del diseño** con sus nombres, precios, características y estados (uno fuera de stock, dos marcados como novedad). Las imágenes se han exportado del propio Figma y se guardan aplanadas sobre blanco, que es el fondo que usa el diseño.
+- **Las columnas del pie** (INFORMACIÓN, LEGAL) son bloques de `ps_linklist`, y "Mi cuenta" los pinta `ps_customeraccountlinks`. Se configuran en **Módulos → Enlaces del pie de página**.
+
+Sobre una instalación limpia con los datos de demostración de PrestaShop, el
+tema funciona igual pero se ve con el catálogo de ropa que trae de serie.
+
+### Un desajuste del propio diseño
+
+En la ficha, el Figma pone **23,95 €** como precio actual, **26,95 €** como
+precio anterior y una píldora de **-30 %**. Esos tres números no cuadran entre
+sí: de 26,95 a 23,95 hay un 11 %. Se han respetado los dos precios, que son lo
+que más se lee, y el porcentaje lo calcula PrestaShop a partir de ellos.
