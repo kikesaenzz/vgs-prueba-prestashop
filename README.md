@@ -89,12 +89,13 @@ modules/ps_customeraccountlinks/ps_customeraccountlinks.tpl
 modules/is_searchbar/views/templates/hook/is_searchbar.tpl
 modules/is_shoppingcart/views/templates/hook/is_shoppingcart.tpl
 modules/is_shoppingcart/views/templates/front/modal-success.tpl
+templates/index.tpl                                 la portada redirige a Cosmética
 ```
 
-Los seis últimos son *overrides* de plantillas de módulo (Falcon ya traía el
-mecanismo: basta con reproducir la ruta del módulo dentro de `themes/falcon`
-para que gane a la plantilla original), así que viven dentro de la carpeta
-del tema y viajan con este repositorio.
+Los seis overrides de módulo (Falcon ya traía el mecanismo: basta con
+reproducir la ruta del módulo dentro de `themes/falcon` para que gane a la
+plantilla original) viven dentro de la carpeta del tema y viajan con este
+repositorio.
 
 ## Decisiones técnicas
 
@@ -110,6 +111,8 @@ del tema y viajan con este repositorio.
 - **Entre las migas y el título hay una banda de imagen a ancho completo** (206 px) con la portada de la categoría. Solo se pinta si la categoría tiene imagen.
 - **En la ficha no hay etiquetas sobre la imagen**: el descuento se comunica con la píldora junto al precio, así que repetirlo encima de la foto sobraba.
 - **Dos bloques de módulo se ocultan desde el tema** porque el diseño no los recoge y duplicaban información: el "Información de la tienda" de `ps_contactinfo` (repetía la columna de contacto del pie) y el de compartir en redes de la ficha. Se ocultan con una regla, no desactivando el módulo, que es configuración de la tienda: basta con retirarla para recuperarlos.
+- **La portada redirige a Cosmética.** El enunciado no pide maquetar la Home, y el contenido de demostración de Falcon ("20% OFF ON CLOTHES", bloques de texto de relleno) dejó de tener sentido en cuanto el catálogo pasó a ser solo cosmética. En vez de dejar esa página inconsistente a la vista, `index.tpl` redirige por JavaScript a la categoría real de la tienda, con un enlace visible como respaldo si JavaScript está deshabilitado.
+- **La columna de filtros solo ofrece las dos facetas del diseño**, "Categorías" y "Precio". `ps_facetedsearch` puede filtrar también por disponibilidad y por cualquier característica del catálogo (Tipo de piel, Función…), pero el Figma no las muestra, así que se han dejado desactivadas en la plantilla de filtros en vez de activar todo lo que el módulo permite.
 - **Los iconos de cuenta y carrito se dibujan con la geometría del Figma.** El diseño los pinta a línea, y Material Icons —que es lo que trae Falcon— solo tiene la versión rellena. Se exportan del Figma y se insertan como SVG en línea, heredando el color con `currentColor`.
 - **Los textos que salían en inglés se corrigen sobrescribiendo la plantilla del módulo, no traduciendo en el back office.** El buscador, el modal del carrito y el título "Mi cuenta" del pie pertenecen a módulos sin catálogo en español. Cambiar la cadena de origen en el override deja el arreglo dentro del repositorio; una traducción del back office se quedaría en la base de datos.
 - **Los titulares del pie van en blanco.** El Figma los marca en `#c2e3ea`, pero sobre el teal del pie se leen con poco contraste, así que se ha preferido el blanco.
@@ -178,11 +181,21 @@ El filete blanco del pie no llegaba a los bordes reales del navegador aunque el 
 **18. El color de un texto puede no ser el que devuelve la API a la primera.**
 "Marca:", "Referencia:" y "Disponibilidad:" salían en gris cuando el diseño los marca en teal y en mayúsculas. La consulta rápida a la API (`fills[0].color`) sí traía gris — pero es el color del **primer carácter**, no de todo el texto: es un nodo de texto enriquecido, con un `characterStyleOverrides` que aplica teal y mayúsculas solo a la etiqueta ("MARCA:") y dejaba el valor (" Caudelie") en gris normal. Los nodos de texto con estilos mixtos hay que leerlos con `styleOverrideTable`, no solo con el color base. Lo mismo pasaba con el primer párrafo de "Información del producto", en negrita en el diseño mientras el resto del cuerpo va en peso normal.
 
+**19. El asset de una banda de imagen puede no ser una foto, sino una captura de referencia.**
+La banda de imagen de la categoría se veía irreconocible (recortada por el medio de una imagen mucho más alta de lo necesario). El export de Figma para ese nodo ("header print screen") no es una foto de producto: es una captura de pantalla completa de un sitio de referencia real que el diseñador usó como maqueta, con la barra de Chrome, el escritorio y el dock incluidos. La franja que interesa —las estanterías con los productos— hay que recortarla a mano dentro de esa captura; dejar que `object-fit: cover` decidiera el recorte automáticamente, centrado en una imagen mucho más alta que ancha, cortaba justo la parte con contenido.
+
+**20. Un valor de atributo HTML y una cadena de JavaScript no se escapan igual.**
+El redirect de la portada apuntaba a una URL con `&amp;` literal en vez de `&`, así que el navegador la interpretaba mal. `Link::getCategoryLink()` da por hecho que su resultado va a un atributo `href` y ya viene sin tocar (con `&` normal), pero el auto-escapado HTML de Smarty (activo por defecto en cualquier `{$variable}`, con o sin modifiers explícitos de por medio) se aplica **después** de mis propios modifiers si no se cierra la cadena con `nofilter`, así que el `&` se convertía en `&amp;` de todas formas al final del pipeline. Para insertar una URL dentro de un `<script>` hacen falta dos cosas: decodificar cualquier entidad HTML que ya traiga (`unescape:'html'`) y terminar con `nofilter` para que el auto-escape de Smarty no vuelva a tocarla después de haberla escapado ya para JavaScript.
+
+**21. Activar todo lo que un módulo permite no es lo mismo que seguir el diseño.**
+Los filtros no solo estaban vacíos: cuando empezaron a funcionar, mostraban siete facetas (disponibilidad, precio, categorías y las cuatro características del catálogo) porque activé todas las que el catálogo nuevo hacía posibles. El Figma solo muestra dos, "Categorías" y "Precio". Que un dato exista y sea filtrable no significa que el diseño lo pida.
+
 **Analogía que ayudó**: los `{hook}` de Smarty son conceptualmente como los `do_action`/`apply_filters` de WordPress, y sobrescribir un `.tpl` equivale a un *template override* de un child theme. Con esa asociación mental, moverse por las plantillas fue mucho más intuitivo.
 
 ## Comprobaciones realizadas
 
-- Navegación por categorías con los productos reales de cosmética, filtros de facetas (disponibilidad, precio, categorías, características) y paginación: se ha comprobado que marcar un filtro cambia el listado sin recargar y que entrar en cada subcategoría muestra solo sus productos.
+- Portada (`index.php`) redirigiendo a Cosmética.
+- Navegación por categorías con los productos reales de cosmética, los dos filtros del diseño (categorías y precio) y paginación: se ha comprobado que marcar un filtro cambia el listado sin recargar y que entrar en cada subcategoría muestra solo sus productos.
 - Ficha de producto: la cantidad se puede subir y bajar con los botones "−"/"+", cambio de combinación actualizando imagen y precio, y **añadir al carrito** abriendo el modal con producto y subtotal correctos.
 - Responsive verificado a 375 px y en escritorio, sin desbordamiento horizontal en categoría, ficha, portada ni pie.
 - `npm run build` sin errores y sin errores en la consola del navegador en categoría, ficha y portada.
@@ -199,8 +212,8 @@ Figma, que **no** forma parte del tema:
 - **Los productos del diseño** con sus nombres, precios, características y estados (uno fuera de stock, dos marcados como novedad). Las imágenes se han exportado del propio Figma y se guardan aplanadas sobre blanco, que es el fondo que usa el diseño.
 - **Las columnas del pie** (INFORMACIÓN, LEGAL) son bloques de `ps_linklist`, y "Mi cuenta" los pinta `ps_customeraccountlinks`. Se configuran en **Módulos → Enlaces del pie de página**.
 - **El catálogo de ropa de las demostración se ha borrado**, no solo ocultado: los productos y las categorías Clothes, Accesorios y Art (con sus subcategorías) no existen en esta base de datos. El diseño solo cubre cosmética, y dejar el resto del catálogo visible en el buscador, en "Promociones" o en el propio menú habría contradicho el punto 3 de "solo debe aparecer lo que hay en el Figma". El script que lo hace, `vgs-limpiar-catalogo.php`, vive junto a los demás en `datos-tienda/` y no es reversible por sí solo: antes de ejecutarlo se vuelca la base de datos completa a `datos-tienda/backups/`.
-- **Los filtros de la columna izquierda se reindexan aparte** (`vgs-reindexar-filtros.php`), porque borrar y crear catálogo no actualiza por sí solo la plantilla de facetas de `ps_facetedsearch` ni qué características son filtrables. Sin este paso la columna de "Filtros" queda vacía.
-- **El pictograma de la banda de categoría** (transparente) y **la banda de imagen a ancho completo** (a un tamaño real, no la miniatura de 141px que registra PrestaShop) los genera `vgs-icono-transparente.php` y `vgs-banner-categoria.php`, aparte del resto de imágenes de `vgs-imagenes-categoria.php`.
+- **Los filtros de la columna izquierda se reindexan aparte** (`vgs-reindexar-filtros.php`), porque borrar y crear catálogo no actualiza por sí solo la plantilla de facetas de `ps_facetedsearch`. La plantilla de filtros solo activa las dos facetas del diseño (categorías y precio); sin este paso la columna de "Filtros" queda vacía o, si se activa todo lo que el módulo permite, muestra más de lo que hay en el Figma.
+- **El pictograma de la banda de categoría** (transparente) y **la banda de imagen a ancho completo** los genera `vgs-icono-transparente.php` y `vgs-banner-categoria.php`, aparte del resto de imágenes de `vgs-imagenes-categoria.php`. La banda no es un simple redimensionado: el asset de Figma para esa zona es la captura completa de un sitio de referencia (barra de navegador y escritorio incluidos), así que el script recorta a mano la franja de estanterías con los productos antes de ajustarla al tamaño real de la banda (1330×206).
 
 Sobre una instalación limpia con los datos de demostración de PrestaShop, el
 tema se ve igual en las páginas de categoría y ficha; el catálogo de ropa que
