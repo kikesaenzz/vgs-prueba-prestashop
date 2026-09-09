@@ -28,57 +28,65 @@
     </div>
 {/block}
 
-{block name='header_nav'}
-    {* Barra superior amarilla del diseño: horario/teléfono a la izquierda y
-       aviso de envíos a la derecha. Los textos son los del Figma. *}
-    <nav class="header-nav vgs-preheader">
-        <div class="container">
-            <div class="vgs-preheader__row">
-                <span class="vgs-preheader__item">{l s='Lun-Vie 9:00h - 19:00h | 976 123 456' d='Shop.Theme.Global'}</span>
-                <span class="vgs-preheader__item vgs-preheader__item--end">{l s='Envíos gratuítos por compras SUPERIORES a 50€' d='Shop.Theme.Global'}</span>
-            </div>
-            <div class="row align-items-center d-none">
-                {hook h='displayNav1'}
-                {hook h='displayNav2'}
-            </div>
-        </div>
-    </nav>
-{/block}
+{* La franja amarilla, el buscador y el menú deben moverse y desaparecer
+   juntos como un único bloque al hacer scroll, no por separado: el
+   envoltorio "sticky" (que useStickyElement.js fija con position:fixed)
+   pasa a abarcar tanto header_nav como header_top en vez de solo el
+   segundo. *}
+<div class="js-header-top-wrapper">
+    <div class="js-header-top">
 
-{block name='header_top'}
-    <div class="js-header-top-wrapper">
-
-        <div class="header-top js-header-top">
-            <div class="header-top__content pt-md-3 pb-md-0 py-2">
-
+        {block name='header_nav'}
+            {* Barra superior amarilla del diseño: horario/teléfono a la izquierda y
+               aviso de envíos a la derecha. Los textos son los del Figma. *}
+            <nav class="header-nav vgs-preheader">
                 <div class="container">
+                    <div class="vgs-preheader__row">
+                        <span class="vgs-preheader__item">{l s='Lun-Vie 9:00h - 19:00h | 976 123 456' d='Shop.Theme.Global'}</span>
+                        <span class="vgs-preheader__item vgs-preheader__item--end">{l s='Envíos gratuítos por compras SUPERIORES a 50€' d='Shop.Theme.Global'}</span>
+                    </div>
+                    <div class="row align-items-center d-none">
+                        {hook h='displayNav1'}
+                        {hook h='displayNav2'}
+                    </div>
+                </div>
+            </nav>
+        {/block}
 
-                    <div class="row header-top__row">
+        {block name='header_top'}
+            <div class="header-top">
+                <div class="header-top__content pt-md-3 pb-md-0 py-2">
 
-                        <div class="col flex-grow-0 header-top__block header-top__block--menu-toggle d-block d-md-none">
-                            <a
-                                    class="header-top__link"
-                                    rel="nofollow"
-                                    href="#"
-                                    data-toggle="modal"
-                                    data-target="#mobile_top_menu_wrapper"
-                            >
-                                <div class="header-top__icon-container">
-                                    <span class="header-top__icon material-icons">menu</span>
-                                </div>
-                            </a>
+                    <div class="container">
+
+                        <div class="row header-top__row">
+
+                            <div class="col flex-grow-0 header-top__block header-top__block--menu-toggle d-block d-md-none">
+                                <a
+                                        class="header-top__link"
+                                        rel="nofollow"
+                                        href="#"
+                                        data-toggle="modal"
+                                        data-target="#mobile_top_menu_wrapper"
+                                >
+                                    <div class="header-top__icon-container">
+                                        <span class="header-top__icon material-icons">menu</span>
+                                    </div>
+                                </a>
+                            </div>
+
+                            {* El diseño no lleva logotipo en la cabecera. *}
+
+                            {hook h='displayTop'}
                         </div>
 
-                        {* El diseño no lleva logotipo en la cabecera. *}
-
-                        {hook h='displayTop'}
                     </div>
-
                 </div>
             </div>
-        </div>
+
     </div>
-    {hook h='displayNavFullWidth'}
+</div>
+{hook h='displayNavFullWidth'}
 
     {* Las migas y el título de categoría son bandas a ancho completo en el
        diseño, por eso se pintan aquí (fuera del .container del layout) y no
