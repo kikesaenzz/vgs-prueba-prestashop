@@ -126,8 +126,59 @@
   background-color: $primary;
 }
 
+// La banda del menú llega a los bordes del navegador en el diseño, pero el
+// módulo la pinta dentro del contenedor: se estira con márgenes negativos y se
+// recorta el sobrante en el contenedor del encabezado (clip, no hidden, para
+// no cortar los submenús que caen hacia abajo).
+.header-top__content {
+  overflow-x: clip;
+}
+
+.header-top__block--menu {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 100vw;
+    transform: translateX(-50%);
+    background-color: $primary;
+  }
+
+  > * {
+    position: relative;
+  }
+}
+
 .main-menu {
-  &__list {
+  display: flex;
+  align-items: center;
+  gap: rem-calc(28px);
+  min-height: rem-calc(38px);
+
+  // Icono de menú del diseño: tres filetes blancos de 18x2.
+  &__toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 0 0 auto;
+    width: rem-calc(18px);
+    height: rem-calc(14px);
+  }
+
+  &__toggle-bar {
+    display: block;
+    width: 100%;
+    height: rem-calc(2px);
+    background-color: $white;
+  }
+
+  // El <ul> de primer nivel es .main-menu__dropdown; .main-menu__list solo
+  // aparece en los submenús.
+  &__dropdown {
     display: flex;
     align-items: center;
     gap: rem-calc(36px);
@@ -137,11 +188,19 @@
     list-style: none;
   }
 
+  &__item--top {
+    display: flex;
+    align-items: center;
+  }
+
+  &__item-link--top,
   &__item > a,
   .top-menu__link {
+    padding: 0;
     color: $white;
     font-size: rem-calc(16px);
     font-weight: 600;
+    text-transform: uppercase;
 
     &:hover,
     &:focus {
@@ -198,5 +257,16 @@
       font-size: rem-calc(18px);
       line-height: 1;
     }
+  }
+}
+
+// Buscador del diseño: caja de 563x30 con borde teal, radio 5 y botón teal.
+.search-form {
+  &__input.form-control {
+    border-radius: rem-calc(5px) 0 0 rem-calc(5px);
+  }
+
+  &__btn.btn {
+    border-radius: 0 rem-calc(5px) rem-calc(5px) 0;
   }
 }

@@ -49,6 +49,16 @@
 
 <div class="d-none d-md-block col-12 header-top__block header-top__block--menu mt-1">
   <div class="main-menu" id="_desktop_top_menu">
+    {* El diseño abre la barra con un icono de menú de tres filetes. En
+       escritorio Falcon ya muestra el menú desplegado a su lado, así que el
+       icono es decorativo: se marca como tal para los lectores de pantalla en
+       vez de dejar un control que no lleva a ninguna parte. *}
+    <span class="main-menu__toggle" aria-hidden="true">
+      <span class="main-menu__toggle-bar"></span>
+      <span class="main-menu__toggle-bar"></span>
+      <span class="main-menu__toggle-bar"></span>
+    </span>
+
     {menu nodes=$menu.children}
   </div>
 </div>
