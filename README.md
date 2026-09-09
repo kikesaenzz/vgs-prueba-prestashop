@@ -77,7 +77,17 @@ templates/catalog/_partials/product-prices.tpl     precio, precio anterior y des
 templates/catalog/_partials/product-tabs.tpl       la descripción sale de las pestañas
 templates/catalog/_partials/category-header.tpl    el título pasa a la banda de la cabecera
 templates/catalog/_partials/miniatures/product.tpl tarjeta del listado
+templates/catalog/_partials/miniatures/_partials/product-prices.tpl
+                                                   orden de precios de la tarjeta
+templates/catalog/_partials/miniatures/_partials/product-title.tpl
+templates/catalog/_partials/product-flags.tpl      etiquetas de estado
+templates/catalog/_partials/product-add-to-cart.tpl fila de compra del diseño
+modules/ps_mainmenu/ps_mainmenu.tpl                icono de menú de la barra
+modules/ps_facetedsearch/views/templates/front/catalog/facets.tpl
 ```
+
+Los dos últimos son *overrides* de plantillas de módulo que el propio tema ya
+traía: viven dentro de la carpeta del tema, así que viajan con este repositorio.
 
 ## Decisiones técnicas
 
@@ -89,6 +99,11 @@ templates/catalog/_partials/miniatures/product.tpl tarjeta del listado
 - **La descripción larga sale de las pestañas** a un bloque "Información del producto" a ancho completo. Los detalles, adjuntos y contenido extra siguen accesibles en las pestañas.
 - **La tarjeta del listado no lleva botón de carrito ni vista rápida**, porque el diseño solo muestra imagen, título y precio.
 - **No se ha tocado la lógica de negocio.** Añadir al carrito y el refresco de precio/imagen al cambiar de combinación son los nativos de PrestaShop y Falcon; el trabajo se ha limitado a `.tpl` y SCSS.
+- **Los valores salen de la API de Figma, no de medir sobre la captura.** Recorriendo el árbol de nodos se obtienen las medidas y los colores exactos: la tarjeta es de 312×416 con la franja de información en 104, la galería de la ficha 534×533, las bandas de la cabecera de 29, 38 y 41 px. Un detalle que solo se ve así: los marcos no son el teal plano sino `#328189` al 30 %.
+- **Entre las migas y el título hay una banda de imagen a ancho completo** (206 px) con la portada de la categoría. Solo se pinta si la categoría tiene imagen.
+- **En la ficha no hay etiquetas sobre la imagen**: el descuento se comunica con la píldora junto al precio, así que repetirlo encima de la foto sobraba.
+- **Dos bloques de módulo se ocultan desde el tema** porque el diseño no los recoge y duplicaban información: el "Información de la tienda" de `ps_contactinfo` (repetía la columna de contacto del pie) y el de compartir en redes de la ficha. Se ocultan con una regla, no desactivando el módulo, que es configuración de la tienda: basta con retirarla para recuperarlos.
+- **El icono de menú de la barra es decorativo.** En el diseño acompaña a "CATEGORÍAS"; en escritorio Falcon ya muestra el menú desplegado a su lado, así que se marca `aria-hidden` en lugar de dejar un control que no lleva a ninguna parte.
 
 ## Dificultades encontradas
 
@@ -118,6 +133,15 @@ Falcon reparte el marcado en muchos parciales (`_partials/miniatures/…`, `cata
 **8. Respetar el refresco AJAX de las combinaciones.**
 Al cambiar de talla o color, PrestaShop vuelve a renderizar parte de la ficha. Todo lo que se añada dentro de ese bloque debe estar en las plantillas que se re-renderizan, o desaparece tras el primer cambio. Se comprobó cambiando de combinación y verificando que la banda de marca/referencia seguía maquetada y que imagen y precio se actualizaban.
 
+**9. Una banda a ancho completo dentro del contenedor.**
+La barra del menú llega a los bordes del navegador en el diseño, pero el módulo la pinta dentro del `.container`. Se estira con un pseudo-elemento de `100vw` centrado y se recorta el sobrante de la barra de desplazamiento con `overflow-x: clip` en la cabecera. `clip` y no `hidden`: `hidden` obligaría al eje vertical a `auto` y cortaría los submenús que caen hacia abajo.
+
+**10. Acertar con la clase que usa el tema.**
+Mis estilos del menú apuntaban a `.main-menu__list`, que en Falcon solo existe en los submenús; el listado de primer nivel es `.main-menu__dropdown`. Lo mismo con las etiquetas de estado: `.product-flags__flag`, no `.product-flag`. Escribir el selector "razonable" en vez de leer el HTML generado cuesta un rato de estilos que no se aplican y no dan ningún error.
+
+**11. Las utilidades de Bootstrap llevan `!important`.**
+La tarjeta salía 40 px más alta de la cuenta por un `mb-2` en el título y el margen que Falcon da al bloque de precios. Como las utilidades de espaciado de Bootstrap son `!important`, no hay especificidad que valga: hay que quitar la clase de la plantilla. Igual con `.rounded`, que pisaba el radio de 8 px de las etiquetas.
+
 **Analogía que ayudó**: los `{hook}` de Smarty son conceptualmente como los `do_action`/`apply_filters` de WordPress, y sobrescribir un `.tpl` equivale a un *template override* de un child theme. Con esa asociación mental, moverse por las plantillas fue mucho más intuitivo.
 
 ## Comprobaciones realizadas
@@ -125,4 +149,13 @@ Al cambiar de talla o color, PrestaShop vuelve a renderizar parte de la ficha. T
 - Navegación por categorías con los productos de demostración, filtros y paginación.
 - Ficha de producto: cambio de combinación (talla y color) actualizando imagen y precio, y **añadir al carrito** abriendo el modal con producto y subtotal correctos.
 - Responsive verificado a 375 px y en escritorio, sin desbordamiento horizontal.
-- `npm run build` sin errores.
+- `npm run build` sin errores y sin errores en la consola del navegador en ninguna de las dos páginas.
+- Medidas contrastadas contra los nodos de Figma: contenedor 1330, columna de filtros 313, tarjeta 312×416 con franja de 104, galería 534×533, bandas de cabecera de 29/38/41 px y paginación de 40×40.
+- Sin `!important` en el SCSS propio.
+
+## Lo que depende del back office, no del tema
+
+Dos cosas del diseño no viajan en este repositorio porque son datos de la tienda:
+
+- **Los títulos y enlaces de las columnas del pie** (MI CUENTA, INFORMACIÓN, LEGAL) los configura `ps_linklist` en **Módulos → Enlaces del pie de página**. Con los datos de demostración salen "Products" y "Our company".
+- **Las miniaturas de la galería** solo aparecen cuando el producto tiene más de una imagen; los productos de demostración traen una sola. Los estilos (88×88 con borde teal) están puestos.
