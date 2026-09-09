@@ -232,15 +232,45 @@
   &__item > a,
   .top-menu__link {
     padding: 0;
-    color: $white;
     font-size: rem-calc(16px);
     font-weight: 600;
     text-transform: uppercase;
 
     &:hover,
     &:focus {
-      color: $vgs-light-blue;
       text-decoration: none;
+    }
+  }
+}
+
+// El menú de escritorio (fondo azul) y el modal de menú en móvil (fondo
+// blanco) reutilizan las mismas clases: sin distinguir el contexto, el
+// texto blanco pensado para el fondo azul quedaba invisible sobre el fondo
+// blanco del modal móvil.
+.header-nav--main,
+.js-main-menu-wrapper .main-menu,
+#_desktop_top_menu {
+  .main-menu__item-link--top,
+  .main-menu__item > a,
+  .top-menu__link {
+    color: $white;
+
+    &:hover,
+    &:focus {
+      color: $vgs-light-blue;
+    }
+  }
+}
+
+#_mobile_top_menu {
+  .main-menu__item-link--top,
+  .main-menu__item > a,
+  .top-menu__link {
+    color: $primary;
+
+    &:hover,
+    &:focus {
+      color: $vgs-purple;
     }
   }
 }

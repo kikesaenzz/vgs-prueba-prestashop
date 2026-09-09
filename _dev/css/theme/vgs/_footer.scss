@@ -126,3 +126,22 @@
 .footer-container .row > div:has(#footer_contact_list) {
   display: none;
 }
+
+// En móvil las columnas del pie (contacto y los bloques de enlaces de
+// ps_linklist) se apilan a ancho completo y quedaban con el texto pegado al
+// borde izquierdo; se centran igual que ya se hace con el filete de
+// copyright (.vgs-footer-bottom, arriba).
+@include media-breakpoint-down(sm) {
+  .footer-container {
+    text-align: center;
+  }
+
+  .vgs-footer-contact {
+    align-items: center;
+
+    &__item {
+      justify-content: center;
+      text-align: left;
+    }
+  }
+}
