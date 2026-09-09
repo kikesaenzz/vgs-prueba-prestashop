@@ -26,7 +26,12 @@
   <a
     class="header-top__link"
     rel="nofollow"
-    href="{$urls.pages.authentication}?back={$urls.current_url|urlencode}"
+    {* $urls.pages.authentication ya trae "?controller=authentication" en
+       esta tienda (sin URLs amigables), así que añadir "?back=..." a pelo
+       generaba "...?controller=authentication?back=...": un signo de
+       interrogación de más que el navegador no interpreta como separador
+       de parámetros y rompía el "volver aquí" tras iniciar sesión. *}
+    href="{$urls.pages.authentication}{if $urls.pages.authentication|strpos:'?' !== false}&{else}?{/if}back={$urls.current_url|urlencode}"
     {if $logged}
       title="{l s='View my customer account' d='Shop.Theme.Customeraccount'}"
     {else}
