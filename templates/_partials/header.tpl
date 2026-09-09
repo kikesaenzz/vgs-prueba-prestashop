@@ -128,6 +128,19 @@
         {/if}
     {/block}
 
+    {* Entre las migas y el título el diseño coloca una banda de imagen a
+       ancho completo (206px de alto) con la portada de la categoría. *}
+    {block name='vgs_category_banner'}
+        {if $page.page_name == 'category' && isset($category) && $category.image.large.url}
+            <div class="vgs-category-banner">
+                <img src="{$category.image.large.url}"
+                     alt="{$category.name}"
+                     class="vgs-category-banner__img"
+                     loading="lazy">
+            </div>
+        {/if}
+    {/block}
+
     {block name='vgs_category_band'}
         {if $page.page_name == 'category' && isset($category)}
             <div class="vgs-category-title">

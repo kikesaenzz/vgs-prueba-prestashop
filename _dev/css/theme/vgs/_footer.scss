@@ -86,3 +86,25 @@
     text-align: center;
   }
 }
+
+// El diseño reparte cuatro columnas de borde a borde del contenedor: contacto,
+// MI CUENTA, INFORMACIÓN y LEGAL. Los módulos las pintan con clases col-md-3
+// que sumadas desbordan la rejilla y obligan a saltar de línea, así que en
+// escritorio se dejan a su ancho natural y se separan con space-between.
+@include media-breakpoint-up(lg) {
+  .footer-container > .container > .row {
+    justify-content: space-between;
+  }
+
+  .footer-container > .container > .row > [class*="col-"] {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: none;
+  }
+}
+
+// El bloque "Información de la tienda" del módulo ps_contactinfo repetiría los
+// datos que el diseño ya coloca en la columna de contacto.
+.footer-container .row > div:has(#footer_contact_list) {
+  display: none;
+}

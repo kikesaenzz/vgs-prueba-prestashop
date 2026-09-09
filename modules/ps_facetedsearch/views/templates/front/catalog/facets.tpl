@@ -28,7 +28,9 @@
     <div id="search_filters" class="js-search-filters search-filters card mb-md-3">
       <div class="card-header d-none d-md-block">
         {block name='facets_title'}
-          <p class="card-title h5 mb-0">{l s='Filter By' d='Shop.Theme.Actions'}</p>
+          {* El diseño titula este bloque "Filtros", igual que el resto de textos
+             de la maqueta. *}
+          <p class="card-title h5 mb-0">{l s='Filtros' d='Shop.Theme.Actions'}</p>
         {/block}
       </div>
       <div class="list-group list-group-flush">

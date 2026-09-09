@@ -195,6 +195,11 @@
 
   .add {
     flex: 0 0 auto;
+
+    // En móvil el botón pasa a ocupar la fila completa.
+    @include media-breakpoint-down(sm) {
+      flex: 1 1 100%;
+    }
   }
 
   .add-to-cart {

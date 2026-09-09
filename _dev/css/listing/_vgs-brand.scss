@@ -3,6 +3,25 @@
 // Página de categoría: banda de título, columna de filtros, rejilla de
 // productos, tarjeta y paginación, según el diseño.
 
+// Banda de imagen a ancho completo con la portada de la categoría: 206px de
+// alto en el diseño, recortando la imagen para no deformarla.
+.vgs-category-banner {
+  overflow: hidden;
+
+  &__img {
+    display: block;
+    width: 100%;
+    height: rem-calc(206px);
+    object-fit: cover;
+  }
+
+  @include media-breakpoint-down(sm) {
+    &__img {
+      height: rem-calc(120px);
+    }
+  }
+}
+
 // Banda teal con el nombre de la categoría.
 .vgs-category-title {
   background-color: $primary;
@@ -347,6 +366,7 @@
   // Precios: actual en teal, anterior tachado y porcentaje en píldora.
   .product-price-and-shipping,
   &__pricing {
+    margin: 0;
     display: flex;
     align-items: center;
     flex-wrap: wrap;
@@ -463,9 +483,11 @@
     display: flex;
   }
 
-  .page-link,
-  a,
-  span {
+  // Solo el enlace de cada página: los <span> internos de "Anterior" y
+  // "Siguiente" heredan el fondo del botón y no llevan el suyo.
+  .page-item > .page-link,
+  .page-item > a,
+  .page-item > span {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -487,19 +509,16 @@
     }
   }
 
-  .current a,
-  .active .page-link,
-  .page-item.active a {
+  .page-item.current > .page-link,
+  .page-item.active > .page-link {
     background-color: $primary;
     color: $white;
     font-weight: 700;
   }
 
   // Botones "Anterior" y "Siguiente": fondo blanco con borde.
-  .previous a,
-  .next a,
-  .previous .page-link,
-  .next .page-link {
+  .page-item.previous > .page-link,
+  .page-item.next > .page-link {
     gap: rem-calc(8px);
     padding: 0 rem-calc(16px);
     border: rem-calc(1px) solid $vgs-border-teal;
@@ -513,8 +532,7 @@
     }
   }
 
-  .disabled a,
-  .disabled .page-link {
+  .page-item.disabled > .page-link {
     opacity: 0.5;
     pointer-events: none;
   }
