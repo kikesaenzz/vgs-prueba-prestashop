@@ -92,6 +92,10 @@ modules/is_shoppingcart/views/templates/front/modal-success.tpl
 templates/index.tpl                                 la portada redirige a Cosmética
 ```
 
+Un archivo de JavaScript propio del tema también se tocó:
+`_dev/js/listing/components/filters/FiltersUrlHandler.js`, que construye la
+URL del filtro de precio (ver dificultad 22).
+
 Los seis overrides de módulo (Falcon ya traía el mecanismo: basta con
 reproducir la ruta del módulo dentro de `themes/falcon` para que gane a la
 plantilla original) viven dentro de la carpeta del tema y viajan con este
@@ -189,6 +193,9 @@ El redirect de la portada apuntaba a una URL con `&amp;` literal en vez de `&`, 
 
 **21. Activar todo lo que un módulo permite no es lo mismo que seguir el diseño.**
 Los filtros no solo estaban vacíos: cuando empezaron a funcionar, mostraban siete facetas (disponibilidad, precio, categorías y las cuatro características del catálogo) porque activé todas las que el catálogo nuevo hacía posibles. El Figma solo muestra dos, "Categorías" y "Precio". Que un dato exista y sea filtrable no significa que el diseño lo pida.
+
+**22. El filtro de precio se quedaba cargando sin fin.**
+Marcar el rango de precio dejaba la página "pensando" para siempre. El slider de precio no usa los enlaces que genera PHP como los checkboxes (`data-search-url`, ya con `id_category` y `controller` incluidos): construye la URL él mismo en JavaScript, a partir de `window.location.origin + window.location.pathname`. Sin URLs amigables —como en esta tienda—, el *pathname* es solo `/index.php`; `id_category` y `controller` viajan en la *query string*, así que la petición AJAX del slider los perdía por completo y acababa pidiendo la portada. Con la portada ahora redirigiendo a la categoría (ver "Decisiones técnicas"), la petición nunca encontraba el bloque de productos que esperaba recibir de vuelta, y el listado se quedaba en el estado de "cargando" para siempre. Se corrige en `FiltersUrlHandler.js` (JS propio de Falcon, no del módulo de filtros) conservando el resto de la *query string* actual al construir la URL, tal y como ya hacen los enlaces de los checkboxes.
 
 **Analogía que ayudó**: los `{hook}` de Smarty son conceptualmente como los `do_action`/`apply_filters` de WordPress, y sobrescribir un `.tpl` equivale a un *template override* de un child theme. Con esa asociación mental, moverse por las plantillas fue mucho más intuitivo.
 

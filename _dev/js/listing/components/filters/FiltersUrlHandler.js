@@ -11,7 +11,18 @@ class FiltersUrlHandler {
 
   getFiltersUrl() {
     this.setOldSearchUrl();
-    return `${this.baseUrl}?q=${this.searchUrl}`;
+
+    // Sin URLs amigables (como en esta tienda) la ruta es solo
+    // "/index.php": id_category y controller viajan en la query string, no
+    // en el pathname. Reconstruir la URL solo con origin+pathname+"?q=..."
+    // los perdía, así que el filtro de rango acababa pidiendo la portada en
+    // vez de la categoría — de ahí que se quedara "cargando" sin fin.
+    const params = new URLSearchParams(window.location.search);
+    params.delete('q');
+    params.delete('page');
+    const otherParams = params.toString();
+
+    return `${this.baseUrl}?${otherParams ? `${otherParams}&` : ''}q=${this.searchUrl}`;
   }
 
   setSearchUrl() {
